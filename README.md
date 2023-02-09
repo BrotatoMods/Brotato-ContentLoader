@@ -4,8 +4,9 @@ A reworking of [dami's Multiple Mod Support](https://github.com/BrotatoMods/Brot
 
 **The docs below are out of date, and need to be updated for the ModLoader update.**
 
---
+For the time being, please refer to Invasion's [ModMain](https://github.com/BrotatoMods/Brotato-Invasion-Mod/blob/main/root/mods-unpacked/Darkly77-Invasion/ModMain.gd), which makes use of ContentLoader.
 
+--
 
 Created by dami. Makes it possible to play with multiple mods. The file needs to be added by a mod creator.
 

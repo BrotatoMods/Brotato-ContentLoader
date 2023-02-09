@@ -1,0 +1,9 @@
+keys,en
+CHAL_CHARACTER_DANGER,Win a run in Danger {1} with {0}
+CHAL_STAT,Reach {0} {1} with {2}
+CHAL_TEST1_NAME,Challenge Test 1
+CHAL_TEST1_DESCRIPTION,"Win a run in danger {1} with character ({0}); \nwhile holding these weapons: {2}; \nas well as either of these weapons: {3}; \nand these items: {4}; \nand either of these items: {5}"
+CHAL_TEST1_DESCRIPTION_NOPE,Nope LOL!
+CHAL_TEST2_NAME,Challenge Test 2
+CHAL_TEST3_NAME,Alien Archeologist
+CHAL_TEST3_DESCRIPTION,Hold these items at the same time: \n{4}

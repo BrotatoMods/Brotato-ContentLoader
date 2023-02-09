@@ -1,11 +1,23 @@
 {
-	"id": "Dami-ContentLoader",
 	"name": "ContentLoader",
-	"version": "2.0.0",
-	"compatible_game_version": ["0.6.1.6"],
-	"authors": ["dami", "Darkly77", "KANA"],
-	"description": "Makes it easier to add new content, including items, weapons, and characters.",
+	"namespace": "Darkly77",
+	"version_number": "3.0.0",
+	"description": "Easily add new items, weapons, characters and challenges",
 	"website_url": "https://github.com/BrotatoMods/Brotato-ContentLoader",
-	"dependencies": [],
-	"incompatibilities": []
+	"dependencies": [
+		"Darkly77-Brotils"
+	],
+	"extra": {
+		"godot": {
+			"incompatibilities": [],
+			"authors": [
+				"Darkly77",
+				"dami",
+				"KANA"
+			],
+			"compatible_mod_loader_version": "3.0.0",
+			"compatible_game_version": ["0.6.1.6"],
+			"config_defaults": {}
+		}
+	}
 }

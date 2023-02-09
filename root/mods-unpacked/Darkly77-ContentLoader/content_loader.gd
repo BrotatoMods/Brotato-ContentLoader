@@ -2,36 +2,41 @@ class_name ContentLoader
 extends Node
 
 # Name:     ContentLoader
-# Version:  2.0.0
-# Author:   dami
-# Editors:  Darkly77, KANA
+# Version:  2.1.0
+# Author:   dami, Darkly77
+# Editors:  KANA
 # Repo:     https://github.com/BrotatoMods/Brotato-ContentLoader
+
+# Content added via ContentLoader is added via `_install_data`, called in:
+# mods-unpacked/Darkly77-ContentLoader/extensions/singletons/progress_data.gd
 
 var items = []       # Added to ItemService.items
 var weapons = []     # Added to ItemService.weapons
 var characters = []  # Added to ItemService.characters
 var debug_items = [] # Added to DebugService.items
+var sets = []        # Added to ItemService.sets
+var challenges = []  # Added to ItemService.challenges
 
-var ContentData = load("res://mods-unpacked/Dami-ContentLoader/content_data.gd").new()
-const LOG_NAME = "Dami-ContentLoader"
+var ContentData = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+const CLOADER_LOG = "Darkly77-ContentLoader"
 
 
 # Helper method available to mods
 func load_data(mod_data_path, mod_name:String = "???"):
-	ModLoader.dev_log(str("Load data from path -> ", mod_data_path), LOG_NAME)
-	var mod_data = load(mod_data_path)
-	ModLoader.dev_log(str("Finished loading data from path -> ", mod_data.resource_path), LOG_NAME)
-
 	var from_mod_text = ""
 	if mod_name != "":
 		from_mod_text = " (via "+ mod_name +")"
 
-	ModLoader.mod_log("Loading ContentData" + from_mod_text + " -> " + mod_data_path, LOG_NAME)
+	ModLoaderUtils.log_info("Loading ContentData" + from_mod_text + " -> " + mod_data_path, CLOADER_LOG)
+
+	var mod_data = load(mod_data_path)
 
 	items.append_array(mod_data.items)
 	weapons.append_array(mod_data.weapons)
 	characters.append_array(mod_data.characters)
 	debug_items.append_array(mod_data.debug_items)
+	sets.append_array(mod_data.sets)
+	challenges.append_array(mod_data.challenges)
 
 	# Apply weapons_characters: Loops over each weapon and adds it
 	# to the corresponding character
@@ -40,23 +45,29 @@ func load_data(mod_data_path, mod_name:String = "???"):
 			var wpn_characters = mod_data.weapons_characters[i]
 			for character in wpn_characters:
 				character.starting_weapons.push_back(mod_data.weapons[i])
-				for weapon in character.starting_weapons:
-					ModLoader.dev_log(str("weapon.my_id -> ", weapon.my_id), LOG_NAME)
+				# for weapon in character.starting_weapons:
+					# ModLoaderUtils.log_debug(str("weapon.my_id -> ", weapon.my_id), CLOADER_LOG)
 
 
 # Internal method that adds all custom content to the main game's pools
 # (via extensions/singletons/progress_data.gd)
 func _install_data():
-	ModLoader.mod_log(str("Installing ContentData"), LOG_NAME)
-	ModLoader.dev_log(str("items -> ", items), LOG_NAME)
-	ModLoader.dev_log(str("weapons -> ", weapons), LOG_NAME)
-	ModLoader.dev_log(str("characters -> ", characters), LOG_NAME)
-	ModLoader.dev_log(str("debug_items -> ", debug_items), LOG_NAME)
+	ModLoaderUtils.log_info(str("Installing ContentData"), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("items -> ", items), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("weapons -> ", weapons), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("characters -> ", characters), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("debug_items -> ", debug_items), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("sets -> ", sets), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("challenges -> ", challenges), CLOADER_LOG)
+
+	_weapon_set_setup()
 
 	# Add loaded content to the game
 	ItemService.items.append_array(items)
 	ItemService.weapons.append_array(weapons)
 	ItemService.characters.append_array(characters)
+	ItemService.sets.append_array(sets) # @since 2.1.0
+	ChallengeService.challenges.append_array(challenges) # @since 2.1.0
 
 	# Add debug items (which makes you always start with them)
 	DebugService.debug_items = DebugService.debug_items.duplicate() # this is needed in case the array is empty
@@ -64,17 +75,17 @@ func _install_data():
 
 	# Debug: Log all loaded content
 	for character in characters:
-		ModLoader.dev_log("Added Character: " + tr(character.name), LOG_NAME)
-		ModLoader.mod_log("Added Character: " + tr(character.name), LOG_NAME)
+		ModLoaderUtils.log_debug("Added Character: " + tr(character.name), CLOADER_LOG)
 	for item in items:
-		ModLoader.dev_log("Added Item: " + tr(item.name), LOG_NAME)
-		ModLoader.mod_log("Added Item: " + tr(item.name), LOG_NAME)
+		ModLoaderUtils.log_debug("Added Item: " + tr(item.name), CLOADER_LOG)
 	for weapon in weapons:
-		ModLoader.dev_log("Added Weapon: " + tr(weapon.name), LOG_NAME)
-		ModLoader.mod_log("Added Weapon: " + tr(weapon.name), LOG_NAME)
+		ModLoaderUtils.log_debug("Added Weapon: " + tr(weapon.name) + " (" + weapon.my_id + ")", CLOADER_LOG)
 	for debug_item in debug_items:
-		ModLoader.dev_log("Added Debug Item: " + tr(debug_item.name), LOG_NAME)
-		ModLoader.mod_log("Added Debug Item: " + tr(debug_item.name), LOG_NAME)
+		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_item.name), CLOADER_LOG)
+	for set in sets:
+		ModLoaderUtils.log_debug("Added Set: " + tr(set.name), CLOADER_LOG)
+	for challenge in challenges:
+		ModLoaderUtils.log_debug("Added Challenge: " + tr(challenge.name), CLOADER_LOG)
 
 	# Debug: Test if your weapon was added to a specific character
 #	for character in ItemService.characters:
@@ -82,15 +93,19 @@ func _install_data():
 #			for weapon in character.starting_weapons:
 #				DebugService.log_data(weapon.my_id)
 
+	# @todo: Make weapon sets work: Contruct a new array of weapon sets, that
+	# combines vanilla sets with the new sets added via `sets`
+
 	ItemService.init_unlocked_pool()
-	add_unlocked_by_default_without_leak()
+	_add_unlocked_by_default_without_leak()
 	ProgressData.load_game_file()
+
 
 
 # Loop over the added content. If its `unlocked_by_default` is true, make sure
 # add it to the arrays of unlocked content (which is required to make them appear
 # in pools)
-func add_unlocked_by_default_without_leak():
+func _add_unlocked_by_default_without_leak():
 	for item in items:
 		if item.unlocked_by_default and not ProgressData.items_unlocked.has(item.my_id):
 			ProgressData.items_unlocked.push_back(item.my_id)
@@ -102,3 +117,54 @@ func add_unlocked_by_default_without_leak():
 	for character in characters:
 		if character.unlocked_by_default and not ProgressData.characters_unlocked.has(character.my_id):
 			ProgressData.characters_unlocked.push_back(character.my_id)
+
+
+
+# Custom weapon sets setup: Add indexes to the sets
+# @todo: We also need a way to apply custom sets to vanilla weapons
+func _weapon_set_setup():
+	# Vanilla count ATOW: 14
+	var vanilla_sets_count = SetData.new().WeaponClass.size()
+
+	# We'll add pairs of `key(my_id):value(set_index)` here, for easier lookup in the weapons loop
+	var set_index_dict = {}
+
+	# Loop 1: Set up sets
+	for i in sets.size():
+		var curr_set = sets[i]
+
+		# Eg. the first custom set will be index: 14 (count of 14, plus i which is 0)
+		var set_index = i + vanilla_sets_count
+
+		# Update the set's local var
+		curr_set.weapon_class = set_index
+
+		# Add to the temp dict
+		set_index_dict[curr_set.my_id] = set_index
+
+		#@todo: use dev_log instead
+		ModLoaderUtils.log_info(str("Set index ", str(set_index), " for weapon class: ", curr_set.my_id, " (", tr(curr_set.name), ")"), CLOADER_LOG)
+
+	#@todo: use dev_log instead
+	ModLoaderUtils.log_info(str("Custom weapon sets: ", set_index_dict), CLOADER_LOG)
+
+	# Loop 2: Set up weapons with custom sets
+	# Updates their weapon_classes prop if they have any custom sets.
+	# This basically just converts the array of [CLSetData] set resources into
+	# their respective indexes, since vanilla uses indexes.
+	# weapon.weapon_classes_cl ([CLSetData]) > weapon.weapon_classes_cl_indexes ([int])
+	for weapon in weapons:
+		# if weapon is CLWeaponData: # as opposed to `WeaponData`
+		if weapon is preload("res://mods-unpacked/Darkly77-ContentLoader/weapon_sets/classes/cl_class_weapon_data.gd"):
+			# print("CLWeaponData=" + weapon.my_id)
+			var custom_sets = weapon.weapon_classes_cl
+			var _vanilla_sets = weapon.weapon_classes # Array of ints (the WeaponClass enum)
+			var indexes = []
+			for cset in custom_sets:
+				indexes.push_back(set_index_dict[cset.my_id])
+				# This actually works! It might seem like it shouldn't, because
+				# we're pushing indexes that aren't defined in the WeaponClass
+				# enum for weapon_data.gd. But this var is actually just an
+				# array of ints, so we're free to add whatever we want to it
+				weapon.weapon_classes.push_back(set_index_dict[cset.my_id])
+			# weapon.weapon_classes_cl_indexes = indexes # @todo: this bit isn't needed anymore, tho it can be useful for debugging

@@ -1,4 +1,4 @@
-class_name ModData
+class_name ContentData
 extends Resource
 
 export (Array, Resource) var items = []
@@ -10,3 +10,9 @@ export (Array, Array, Resource) var weapons_characters = []
 # Array of items to always add. Can be used to add an item that provides info
 # on the mod (eg. the "Invasion Mod" item in Invasion)
 export (Array, Resource) var debug_items = []
+
+# Adds to ItemService.sets
+export (Array, Resource) var sets = []
+
+# Adds to ChallengeService.challenges
+export (Array, Resource) var challenges = []
