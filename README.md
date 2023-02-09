@@ -1,6 +1,6 @@
 # Brotato - ContentLoader
 
-![GitHub all releases](https://img.shields.io/github/downloads/BrotatoMods/Brotato-ContentLoader/total)
+![GitHub all releases](https://img.shields.io/github/downloads/BrotatoMods/Brotato-ContentLoader/total) [^1]
 
 ContentLoader makes it easy to add new content to Brotato. You can add:
 
@@ -273,3 +273,5 @@ Their *mod_main.gd* file is the entry point for ContentLoader.
 ContentLoader was created by [Darkly77](https://github.com/ithinkandicode), with contributions from [KANA](https://github.com/KANAjetzt).
 
 It is based on [dami's Multiple Mod Support](https://github.com/BrotatoMods/Brotato-damis-Multiple-Mod-Support), and its core functionality still uses dami's code.
+
+[^1]: *download counter: the repo had to change so the counter got wiped, was 250, RIP*
