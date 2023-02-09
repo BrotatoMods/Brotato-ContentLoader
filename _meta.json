@@ -1,0 +1,11 @@
+{
+	"id": "Dami-ContentLoader",
+	"name": "ContentLoader",
+	"version": "2.0.0",
+	"compatible_game_version": ["0.6.1.6"],
+	"authors": ["dami", "Darkly77", "KANA"],
+	"description": "Makes it easier to add new content, including items, weapons, and characters.",
+	"website_url": "https://github.com/BrotatoMods/Brotato-ContentLoader",
+	"dependencies": [],
+	"incompatibilities": []
+}

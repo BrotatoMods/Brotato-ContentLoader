@@ -1,4 +1,11 @@
-# Brotato - dami's Multiple Mod Support
+# Brotato - ContentLoader
+
+A reworking of [dami's Multiple Mod Support](https://github.com/BrotatoMods/Brotato-damis-Multiple-Mod-Support), made to with with [ModLoader](https://github.com/GodotModding/mod-loader).
+
+**The docs below are out of date, and need to be updated for the ModLoader update.**
+
+--
+
 
 Created by dami. Makes it possible to play with multiple mods. The file needs to be added by a mod creator.
 
