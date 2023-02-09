@@ -166,6 +166,8 @@ func _cl_check_single_custom_challenge(challenge, do_unlock:bool = true, won_ron
 		if do_unlock:
 			complete_challenge(challenge.my_id)
 	else:
-		ModLoaderUtils.log_debug("[check_single_custom_challenge] NO: Challenge requirements not met (" + tr(challenge.name) + ")", CLOADER_LOG)
+		#@todo: Fix this. It created 1449 logs when I tested it (161 logs per challenge, with 9 custom challenges being used)
+		# ModLoaderUtils.log_debug("[check_single_custom_challenge] NO: Challenge requirements not met (" + tr(challenge.name) + ")", CLOADER_LOG)
+		pass
 
 	return can_unlock_challenge

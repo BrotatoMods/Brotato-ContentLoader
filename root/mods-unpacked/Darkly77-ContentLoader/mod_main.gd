@@ -33,6 +33,9 @@ func _install_extensions(modLoader):
 	# deferred until after progress_data has finished setting vanilla things up
 	modLoader.install_script_extension(dir + "extensions/singletons/progress_data.gd")
 
+	# GUI - Character select columns
+	modLoader.install_script_extension(dir + "extensions/ui/menus/run/character_selection.gd")
+
 
 # Add ContentLoader as a child of this node (which itself is a child of ModLoader)
 # Usage in dependant mods:
