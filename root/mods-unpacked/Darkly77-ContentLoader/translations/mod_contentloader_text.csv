@@ -1,9 +1,10 @@
 keys,en
-CHAL_CHARACTER_DANGER,Win a run in Danger {1} with {0}
-CHAL_STAT,Reach {0} {1} with {2}
-CHAL_TEST1_NAME,Challenge Test 1
-CHAL_TEST1_DESCRIPTION,"Win a run in danger {1} with character ({0}); \nwhile holding these weapons: {2}; \nas well as either of these weapons: {3}; \nand these items: {4}; \nand either of these items: {5}"
-CHAL_TEST1_DESCRIPTION_NOPE,Nope LOL!
-CHAL_TEST2_NAME,Challenge Test 2
-CHAL_TEST3_NAME,Alien Archeologist
-CHAL_TEST3_DESCRIPTION,Hold these items at the same time: \n{4}
+CL_CHAL_CHAR_DANGER_0,Win a run with {0}
+CL_CHAL_CHAR_DANGER_ANY,Win a run in Danger {1} with {0}
+CL_CHAL_STAT,Reach {6} {7}
+CL_CHAL_STAT_CHARACTER,Reach {6} {7} with {2}
+CL_CHAL_HOLD_ITEMS_ALL,Hold all of these items at the same time: \n{4}
+CL_CHAL_HOLD_ITEMS_ANY,Hold any of these items at the same time: \n{4}
+CL_CHAL_HOLD_WEAPONS_ALL,Hold all of these weapons at the same time: \n{4}
+CL_CHAL_HOLD_WEAPONS_ANY,Hold any of these weapons at the same time: \n{4}
+CL_CHAL_TEST_ALL_OPTIONS,"Win a run in danger {1} with character ({0}); \nwhile holding these weapons: {2}; \nas well as either of these weapons: {3}; \nand these items: {4}; \nand either of these items: {5}"

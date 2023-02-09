@@ -4,9 +4,14 @@ const CLOADER_LOG = "Darkly77-ContentLoader"
 var dir = ""
 
 
+# Boilerplate
+# =============================================================================
+
 func _init(modLoader = ModLoader):
 	ModLoaderUtils.log_info("Init", CLOADER_LOG)
+
 	dir = modLoader.UNPACKED_DIR + "Darkly77-ContentLoader/"
+
 	_add_child_class()
 	_install_extensions(modLoader)
 
@@ -14,6 +19,9 @@ func _init(modLoader = ModLoader):
 func _ready():
 	ModLoaderUtils.log_info("Done", CLOADER_LOG)
 
+
+# Custom
+# =============================================================================
 
 func _install_extensions(modLoader):
 	# TRANSLATIONS

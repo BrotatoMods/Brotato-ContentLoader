@@ -4,12 +4,13 @@ extends Node
 # Content added via ContentLoader is added via `_install_data`, called in:
 # mods-unpacked/Darkly77-ContentLoader/extensions/singletons/progress_data.gd
 
-var items = []       # Added to ItemService.items
-var weapons = []     # Added to ItemService.weapons
-var characters = []  # Added to ItemService.characters
-var debug_items = [] # Added to DebugService.items
-var sets = []        # Added to ItemService.sets
-var challenges = []  # Added to ItemService.challenges
+var items = []         # Added to ItemService.items
+var characters = []    # Added to ItemService.characters
+var weapons = []       # Added to ItemService.weapons
+var sets = []          # Added to ItemService.sets
+var challenges = []    # Added to ItemService.challenges
+var debug_items = []   # Added to DebugService.items
+var debug_weapons = [] # Added to DebugService.weapons
 
 var ContentData = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
 const CLOADER_LOG = "Darkly77-ContentLoader"
@@ -29,6 +30,7 @@ func load_data(mod_data_path, mod_name:String = "???"):
 	weapons.append_array(mod_data.weapons)
 	characters.append_array(mod_data.characters)
 	debug_items.append_array(mod_data.debug_items)
+	debug_weapons.append_array(mod_data.debug_weapons)
 	sets.append_array(mod_data.sets)
 	challenges.append_array(mod_data.challenges)
 
@@ -49,10 +51,11 @@ func _install_data():
 	ModLoaderUtils.log_info(str("Installing ContentData"), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("items -> ", items), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("weapons -> ", weapons), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("characters -> ", characters), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("debug_items -> ", debug_items), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("sets -> ", sets), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("characters -> ", characters), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("challenges -> ", challenges), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("debug_items -> ", debug_items), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("debug_weapons -> ", debug_weapons), CLOADER_LOG)
 
 	_weapon_set_setup()
 
@@ -65,7 +68,9 @@ func _install_data():
 
 	# Add debug items (which makes you always start with them)
 	DebugService.debug_items = DebugService.debug_items.duplicate() # this is needed in case the array is empty
+	DebugService.debug_weapons = DebugService.debug_weapons.duplicate()
 	DebugService.debug_items.append_array(debug_items)
+	DebugService.debug_weapons.append_array(debug_weapons)
 
 	# Debug: Log all loaded content
 	for character in characters:
@@ -76,6 +81,8 @@ func _install_data():
 		ModLoaderUtils.log_debug("Added Weapon: " + tr(weapon.name) + " (" + weapon.my_id + ")", CLOADER_LOG)
 	for debug_item in debug_items:
 		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_item.name), CLOADER_LOG)
+	for debug_weapon in debug_weapons:
+		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_weapon.name), CLOADER_LOG)
 	for set in sets:
 		ModLoaderUtils.log_debug("Added Set: " + tr(set.name), CLOADER_LOG)
 	for challenge in challenges:
@@ -87,13 +94,9 @@ func _install_data():
 #			for weapon in character.starting_weapons:
 #				DebugService.log_data(weapon.my_id)
 
-	# @todo: Make weapon sets work: Contruct a new array of weapon sets, that
-	# combines vanilla sets with the new sets added via `sets`
-
 	ItemService.init_unlocked_pool()
 	_add_unlocked_by_default_without_leak()
 	ProgressData.load_game_file()
-
 
 
 # Loop over the added content. If its `unlocked_by_default` is true, make sure
