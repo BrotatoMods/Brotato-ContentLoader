@@ -17,7 +17,7 @@ func _ready():
 
 func _install_extensions(modLoader):
 	# TRANSLATIONS
-	modLoader.add_translation_from_resource(dir + "translations/contentloader_text.en.translation")
+	modLoader.add_translation_from_resource(dir + "translations/mod_contentloader_text.en.translation")
 
 	# WEAPON CLASSES/SETS
 	modLoader.install_script_extension(dir + "extensions/singletons/item_service.gd") # Patch various item funcs to use custom classes
