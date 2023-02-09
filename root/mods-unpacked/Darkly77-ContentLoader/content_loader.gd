@@ -1,12 +1,6 @@
 class_name ContentLoader
 extends Node
 
-# Name:     ContentLoader
-# Version:  2.1.0
-# Author:   dami, Darkly77
-# Editors:  KANA
-# Repo:     https://github.com/BrotatoMods/Brotato-ContentLoader
-
 # Content added via ContentLoader is added via `_install_data`, called in:
 # mods-unpacked/Darkly77-ContentLoader/extensions/singletons/progress_data.gd
 
@@ -118,6 +112,16 @@ func _add_unlocked_by_default_without_leak():
 		if character.unlocked_by_default and not ProgressData.characters_unlocked.has(character.my_id):
 			ProgressData.characters_unlocked.push_back(character.my_id)
 
+	# This sets up custom characters to have the data they need for them to
+	# show correctly in the character selection screen
+	for character in ItemService.characters:
+		var character_diff_info = CharacterDifficultyInfo.new(character.my_id)
+
+		for zone in ZoneService.zones:
+			if zone.unlocked_by_default:
+				character_diff_info.zones_difficulty_info.push_back(ZoneDifficultyInfo.new(zone.my_id))
+
+		ProgressData.difficulties_unlocked.push_back(character_diff_info)
 
 
 # Custom weapon sets setup: Add indexes to the sets
