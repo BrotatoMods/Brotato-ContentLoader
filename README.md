@@ -99,8 +99,6 @@ In the setup shown here, we've added a weapon called "Chainsaw". Note how each t
 
 ![screenshot](.docs/ContentData-weapons.png)
 
-> ⚠️ *Warning: If you intend to use custom weapon sets, use ContentLoader's extended version of the WeaponData class, called `CLWeaponData`. See "Weapon Sets" below for more info.*
-
 
 ## Weapon's Characters
 
@@ -128,46 +126,7 @@ This next setup does the same, but also adds Knight as a starting character for 
 
 ## Weapon Sets (Classes)
 
-Vanilla Brotato uses enums for weapon sets (aka classes/types). These enums can't be extended, so ContentLoader uses a different approach, and provides 2 custom classes to do so:
-
-| Class | Based On | Details | Used for |
-| ----- | -------- | ------- | ----- |
-| `CLSetData`  | `SetData` | Adds two string variables: `my_id` and `name`. | Custom weapon sets |
-| `CLWeaponData` | `WeaponData` | Adds the variable `weapon_classes_cl`, an array of `CLSetData` resources. | Weapons with custom sets |
-
-
-### Create a custom set
-
-To create a new weapon set, right-click a folder, choose "*Create New Resource*", type `CLSetData`, and choose the custom class.
-
-- The variable `my_id` ("My ID") should be named `set_yoursetname`.
-  - Replace `yoursetname` with the actual set name.
-  - This must be unique.
-- The variable `name` ("Name") can be anything.
-  - As with many other string variables, you can use a translatable string here (see [ModLoader Wiki](https://github.com/GodotModding/godot-mod-loader/wiki/API-Methods#add_translation_from_resource)).
-- The variable `set_bonuses` ("Set Bonuses") is an array, and is used in the same way as vanilla sets.
-  - The array should have a size of `5`:
-    - The 1st array item (`0`) is applied when the player has 2 weapons in a set
-    - The 2nd array item (`1`) is applied when they have 3
-    - The 3rd array item (`2`) is applied when they have 4
-    - The 4th array item (`3`) is applied when they have 5
-    - The 5th array item (`4`) is applied when they have 6
-
-![screenshot](.docs/CLSetData2.png)
-
-### Add a custom set to a weapon
-
-The `CLWeaponData` class is identical to the vanilla version, but also supports custom weapon sets.
-
-To apply a custom set to a weapon, drag and drop the CLSetData resource into the "Weapon Classes CL" array:
-
-![screenshot](.docs/CLWeaponData.png)
-
-> ⚠️ *Warning: It's recommended that you always create new weapons using this class, rather than vanilla's `WeaponData`. This is because, if you want to switch to `CLWeaponData` later, you'll need to do edit your weapons to use it via an external code editor. If you try to change from `WeaponData` to `CLWeaponData` through the Godot Editor, all previously assigned values will be wiped for that weapon.*
-
-### Add sets to ContentLoader
-
-Add your custom weapon set resources to the **Sets** array.
+Add your custom weapon set resources to the **Sets** array. They can be added to a weapon's `sets` array just like vanilla sets.
 
 ![screenshot](.docs/ContentData-sets.png)
 
@@ -207,18 +166,12 @@ ContentLoader comes packaged with a few translation strings for challenge descri
 | `CL_CHAL_CHAR_DANGER_0`    | Win a run with `{Character}` |
 | `CL_CHAL_CHAR_DANGER_ANY`  | Win a run with `{Character}` in Danger `{DangerLevel}` |
 | `CL_CHAL_STAT`             | Reach `{StatValue}` `{StatName}` |
-| `CL_CHAL_STAT_CHARACTER`   | Reach `{StatValue}` `{StatName}` with `{Character}` |
 | `CL_CHAL_HOLD_ITEMS_ALL`   | Hold all of these items at the same time: `{Items}` |
 | `CL_CHAL_HOLD_ITEMS_ANY`   | Hold any of these items at the same time: `{Items}` |
 | `CL_CHAL_HOLD_WEAPONS_ALL` | Hold all of these weapons at the same time: `{Weapons}` |
 | `CL_CHAL_HOLD_WEAPONS_ANY` | Hold any of these weapons at the same time: `{Weapons}` |
 | `CL_CHAL_TEST_ALL_OPTIONS` | Demo showing all of the available options |
 
-You can also use these vanilla translation strings:
-
-| String | Description |
-| ------ | ----------- |
-| `CHAL_DIFFICULTY_DESC` | Win a run with {Character} *-- same as `CL_CHAL_CHAR_DANGER_0`* |
 
 #### Translation Variables
 
@@ -232,6 +185,8 @@ CLChallengeData challenges also provide additional variables to translation stri
 | `{4}` | OR Weapons | *same as above* |
 | `{3}` | AND Items | *same as above* |
 | `{5}` | OR Items | *same as above* |
+| `{6}` | Value | Used by stat challenges |
+| `{7}` | Stat | *(translated string)* |
 
 For example, you could create a challenge for Brawler on Danger 4, and use this description text:
 
