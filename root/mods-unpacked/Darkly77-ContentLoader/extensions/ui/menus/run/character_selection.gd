@@ -40,4 +40,5 @@ func _cl_adjust_margins()->void:
 # In a future update, we'll need to add a scrollbar or something, else new
 #   characters will spill offscreen
 func _cl_increase_columns()->void:
+	#@todo: Make this configurable? Or move it to an external mod?
 	_inventory.columns = 17 # default: 12, max: 17

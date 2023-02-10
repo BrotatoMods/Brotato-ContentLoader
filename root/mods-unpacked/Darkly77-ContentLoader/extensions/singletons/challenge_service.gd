@@ -6,81 +6,18 @@ const CLOADER_LOG = "Darkly77-ContentLoader"
 # Extensions
 # =============================================================================
 
-# func check_counted_challenges
-
-# Triggered in RunData by: remove_weapon
-# Triggered in RunData by: remove_all_weapons
-# Triggered in RunData by: apply_item_effects
-# Triggered in RunData by: unapply_item_effects
-# Triggered in RunData by: add_stat
-# Triggered in RunData by: remove_stat
-func check_stat_challenges():
-	.check_stat_challenges()
-	_cl_check_custom_stat_challenges()
+# n/a - the code below is triggered via the extension in run_data.gd and main.gd
 
 
 # Custom
 # =============================================================================
 
-# Patches the stat check challenges to accept any stat. Vanilla is limited as
-# its challenges are all hardcoded. This implementation isn't, but stil uses
-# vanilla's approach of using `challenge.stat` and `challenge.number` (for the
-# stat name, eg stat_max_hp, and the required value). There's a check to ensure
-# support for negatives and zero
-#@todo: Add support for using `required_character` from the custom challenge
-# class (`CLChallengeData`)
-func _cl_check_custom_stat_challenges()->void:
-	# Vanilla already checks for these challenges, so we need to ignore them
-	var vanilla_challenges = [
-		get_chal("chal_hallucination"),
-		get_chal("chal_fast"),
-		get_chal("chal_slow"),
-		get_chal("chal_dying"),
-		get_chal("chal_perfect_vision"),
-		get_chal("chal_agriculture"),
-	]
-
-	var vanilla_challenge_ids = []
-
-	# populate vanilla IDs
-	for v_challenge in vanilla_challenges:
-		vanilla_challenge_ids.push_back(v_challenge.my_id)
-
-	# Loop over challenges
-	#@todo: We need to cache an array of challenges that use stats, so that
-	# we're not looping over every challenge each time
-	for chal in challenges:
-
-		# Ignore vanilla challenges
-		if vanilla_challenge_ids.find(chal.my_id) != -1:
-			continue
-
-		# Ignore challenegs that aren't related to stats
-		if chal.stat == "":
-			continue
-
-		# Get sign (-1 is neg / 0 is 0 / 1 is pos)
-		var stat_sign = sign(chal.value)
-
-		# Positive: Current stat value should be bigger (or same)
-		if stat_sign == 1:
-			if Utils.get_stat(chal.stat) >= chal.value:
-				complete_challenge(chal.my_id)
-
-		# Negative: Current stat value should be smaller (or same)
-		if stat_sign == -1:
-			if Utils.get_stat(chal.stat) <= chal.value:
-				complete_challenge(chal.my_id)
-
-		# Neutral: Stat should be zero (only relevant for MaxHP?)
-		if stat_sign == 0:
-			if Utils.get_stat(chal.stat) == 0:
-				complete_challenge(chal.my_id)
-
-
 # Unlocks for different characters on various danger levels
 # Usage: Give your challenge an ID like this: `chal_danger_{danger_number}_{character_id}`,
 # but remove "character_" in your character name. Eg: `chal_danger_3_mutant` = Win ranger 3 with Mutant`
+# Called from:
+#   res://mods-unpacked/Darkly77-ContentLoader/extensions/main.gd
+#   res://mods-unpacked/Darkly77-ContentLoader/extensions/singletons/run_data.gd
 func cl_check_custom_completion_challenges(won_ron:bool = false)->void:
 	for challenge in challenges:
 		# if challenge is CLChallengeData:

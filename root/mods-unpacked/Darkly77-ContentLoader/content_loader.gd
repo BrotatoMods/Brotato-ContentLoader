@@ -57,8 +57,6 @@ func _install_data():
 	ModLoaderUtils.log_debug(str("debug_items -> ", debug_items), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("debug_weapons -> ", debug_weapons), CLOADER_LOG)
 
-	_weapon_set_setup()
-
 	# Add loaded content to the game
 	ItemService.items.append_array(items)
 	ItemService.weapons.append_array(weapons)
@@ -125,53 +123,3 @@ func _add_unlocked_by_default_without_leak():
 				character_diff_info.zones_difficulty_info.push_back(ZoneDifficultyInfo.new(zone.my_id))
 
 		ProgressData.difficulties_unlocked.push_back(character_diff_info)
-
-
-# Custom weapon sets setup: Add indexes to the sets
-# @todo: We also need a way to apply custom sets to vanilla weapons
-func _weapon_set_setup():
-	# Vanilla count ATOW: 14
-	var vanilla_sets_count = SetData.new().WeaponClass.size()
-
-	# We'll add pairs of `key(my_id):value(set_index)` here, for easier lookup in the weapons loop
-	var set_index_dict = {}
-
-	# Loop 1: Set up sets
-	for i in sets.size():
-		var curr_set = sets[i]
-
-		# Eg. the first custom set will be index: 14 (count of 14, plus i which is 0)
-		var set_index = i + vanilla_sets_count
-
-		# Update the set's local var
-		curr_set.weapon_class = set_index
-
-		# Add to the temp dict
-		set_index_dict[curr_set.my_id] = set_index
-
-		#@todo: use dev_log instead
-		ModLoaderUtils.log_info(str("Set index ", str(set_index), " for weapon class: ", curr_set.my_id, " (", tr(curr_set.name), ")"), CLOADER_LOG)
-
-	#@todo: use dev_log instead
-	ModLoaderUtils.log_info(str("Custom weapon sets: ", set_index_dict), CLOADER_LOG)
-
-	# Loop 2: Set up weapons with custom sets
-	# Updates their weapon_classes prop if they have any custom sets.
-	# This basically just converts the array of [CLSetData] set resources into
-	# their respective indexes, since vanilla uses indexes.
-	# weapon.weapon_classes_cl ([CLSetData]) > weapon.weapon_classes_cl_indexes ([int])
-	for weapon in weapons:
-		# if weapon is CLWeaponData: # as opposed to `WeaponData`
-		if weapon is preload("res://mods-unpacked/Darkly77-ContentLoader/weapon_sets/classes/cl_class_weapon_data.gd"):
-			# print("CLWeaponData=" + weapon.my_id)
-			var custom_sets = weapon.weapon_classes_cl
-			var _vanilla_sets = weapon.weapon_classes # Array of ints (the WeaponClass enum)
-			var indexes = []
-			for cset in custom_sets:
-				indexes.push_back(set_index_dict[cset.my_id])
-				# This actually works! It might seem like it shouldn't, because
-				# we're pushing indexes that aren't defined in the WeaponClass
-				# enum for weapon_data.gd. But this var is actually just an
-				# array of ints, so we're free to add whatever we want to it
-				weapon.weapon_classes.push_back(set_index_dict[cset.my_id])
-			# weapon.weapon_classes_cl_indexes = indexes # @todo: this bit isn't needed anymore, tho it can be useful for debugging

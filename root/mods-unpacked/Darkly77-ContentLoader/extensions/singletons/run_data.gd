@@ -1,6 +1,8 @@
 extends "res://singletons/run_data.gd"
 
 
+#@todo: This is very expensive for performance
+
 func add_item(item:ItemData)->void:
 	.add_item(item)
 	ChallengeService.cl_check_custom_completion_challenges()

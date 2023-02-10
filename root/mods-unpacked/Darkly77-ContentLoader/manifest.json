@@ -1,7 +1,7 @@
 {
 	"name": "ContentLoader",
 	"namespace": "Darkly77",
-	"version_number": "4.0.0",
+	"version_number": "5.0.0",
 	"description": "Helper for mods to add new items, weapons, characters and challenges",
 	"website_url": "https://github.com/BrotatoMods/Brotato-ContentLoader",
 	"dependencies": [
