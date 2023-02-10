@@ -16,6 +16,8 @@ export (Array, Resource) var required_items_or = []
 # {4} = OR Weapons (requires ONE of the specified weapons)
 # {3} = AND Items (same join method as above)
 # {5} = OR Items
+# {6} = Value
+# {7} = Stat (translated string)
 func get_desc_args()->Array:
 	# return [str(value), tr(stat.to_upper())]
 

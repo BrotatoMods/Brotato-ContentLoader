@@ -2,7 +2,6 @@ keys,en
 CL_CHAL_CHAR_DANGER_0,Win a run with {0}
 CL_CHAL_CHAR_DANGER_ANY,Win a run in Danger {1} with {0}
 CL_CHAL_STAT,Reach {6} {7}
-CL_CHAL_STAT_CHARACTER,Reach {6} {7} with {2}
 CL_CHAL_HOLD_ITEMS_ALL,Hold all of these items at the same time: \n{4}
 CL_CHAL_HOLD_ITEMS_ANY,Hold any of these items at the same time: \n{4}
 CL_CHAL_HOLD_WEAPONS_ALL,Hold all of these weapons at the same time: \n{4}
