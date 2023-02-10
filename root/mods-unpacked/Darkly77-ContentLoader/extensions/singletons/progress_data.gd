@@ -4,7 +4,6 @@ extends "res://singletons/progress_data.gd"
 # its data before we can add items
 
 func _ready():
-	._ready()
 
 	var ContentLoader = get_node("/root/ModLoader/Darkly77-ContentLoader/ContentLoader")
 	ContentLoader._install_data()
