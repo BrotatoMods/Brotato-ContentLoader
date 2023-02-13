@@ -22,16 +22,16 @@ ContentLoader makes it easy to add new content to Brotato. You can add:
 
 Beyond ModLoader's [required structure](https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Structure), you are free to structure your ContentLoader mods however you want.
 
-However, there is a recommended structure. Following this will make your mod easier to edit and maintain, and make it easier for other modders to provide support to you:
+However, there is a recommended structure. Following this will make your mod easier to edit and maintain, and make it easier for other modders to provide support to you.
+
+You can refer to the examples of [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion) and [Assassin](https://github.com/BrotatoMods/Brotato-Assassin-Mod/tree/main/root/mods-unpacked/JuneFurrs-Assassin) to see how this looks for finished mods. Here's what their folders mean:
 
 - `content` - Stores all the custom content, with subfolders for each type (`items`, `weapons`, etc)
 - `content_data` - For your *ContentData* resource files
 - `extensions` - For code that extends vanilla
 - `translations` - Translation CSVs (ie. custom text for item descriptions, etc)
 
-You can refer to the examples of [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion) and [Assassin](https://github.com/BrotatoMods/Brotato-Assassin-Mod/tree/main/root/mods-unpacked/JuneFurrs-Assassin) to see how this looks for finished mods.
-
-> 💡 *Tip: For your images, it is **highly** recommended that you prefix all filenames with `yourmodname_`. See [.import](https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Structure#import) on the ModLoader Wiki for more info on why this is so beneficial.*
+> 💡 *Tip: For your images, it is **highly** recommended that you prefix all filenames with `yourmodname_`. See [.import](https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Structure#import) on the ModLoader Wiki for info on the benefits of this.*
 
 
 ## Adding Content
