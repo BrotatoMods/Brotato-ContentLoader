@@ -24,6 +24,10 @@ func load_data(mod_data_path, mod_name:String = "???"):
 
 	ModLoaderUtils.log_info("Loading ContentData" + from_mod_text + " -> " + mod_data_path, CLOADER_LOG)
 
+	if not File.new().file_exists(mod_data_path):
+		ModLoaderUtils.log_fatal("Tried to load data from a file that doesn't exist, via the mod %s. The invalid path was: %s" % [mod_name, mod_data_path], CLOADER_LOG)
+		return
+
 	var mod_data = load(mod_data_path)
 
 	items.append_array(mod_data.items)
