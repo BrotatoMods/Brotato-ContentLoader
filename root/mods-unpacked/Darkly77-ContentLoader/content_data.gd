@@ -10,6 +10,7 @@ export (Array, Resource) var sets = []         # ItemService.sets
 export (Array, Resource) var challenges = []   # ChallengeService.challenges
 export (Array, Resource) var upgrades = []     # ItemService.upgrades
 export (Array, Resource) var consumables = []  # ItemService.consumables
+export (Array, Resource) var elites = []       # ItemService.elites
 # export (Array, Resource) var difficulties = [] # ItemService.difficulties
 
 # Array of items/weapons to always add
