@@ -2,15 +2,29 @@
 
 ![GitHub all releases](https://img.shields.io/github/downloads/BrotatoMods/Brotato-ContentLoader/total) [^1]
 
-ContentLoader makes it easy to add new content to Brotato. You can add:
+ContentLoader makes it easy to add new content to Brotato.
 
-- Characters
-- Items
-- Weapons
-- Weapon Sets
-- Challenges (for all danger levels)
+You can add: *Characters, Items, Weapons, Weapon Sets, Challenges (for all danger levels).*
 
-*For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.*
+For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.
+
+## TOC
+
+- [Requirements](#requirements)
+- [Structure](#structure)
+- [Adding Content](#adding-content)
+- [ContentData Resources](#contentdata-resources)
+- [Items](#items)
+- [Characters](#characters)
+- [Weapons](#weapons)
+- [Weapon's Characters](#weapons-characters)
+- [Weapon Sets (Classes)](#weapon-sets-classes)
+- [Challenges](#challenges)
+    - [CLChallengeData](#clchallengedata)
+    - [Translation Strings](#translation-strings)
+- [Debug Items](#debug-items)
+- [Appendix](#appendix)
+
 
 ## Requirements
 
@@ -138,6 +152,10 @@ Add Challenge items to the **Challenges** array:
 ![screenshot](.docs/ContentData-challenges.png)
 
 ### CLChallengeData
+
+> 🚨 **IMPORTANT:**<br>
+> Custom challenges have been moved out of ContentLoader, and are now a standalone mod called [ExpandedChallenges](https://github.com/BrotatoMods/Darkly77-ExpandedChallenges).<br>
+> However, the documentation (below) hasn't been migrated yet. Until they are, please use below for reference, but note that things may be slightly different.
 
 Vanilla's challenges are limited to only Danger0 unlocks. To extend this, ContentLoader provides a custom resource class, `CLChallengeData`, which is based on the vanilla class `ChallengeData`.
 
