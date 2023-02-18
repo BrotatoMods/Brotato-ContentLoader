@@ -153,6 +153,10 @@ Add Challenge items to the **Challenges** array:
 
 ### CLChallengeData
 
+> 🚨 **IMPORTANT:**<br>
+> Custom challenges have been moved out of ContentLoader, and are now a standalone mod called [ExpandedChallenges](https://github.com/BrotatoMods/Darkly77-ExpandedChallenges).<br>
+> However, the documentation (below) hasn't been migrated yet. Until they are, please use below for reference, but note that things may be slightly different.
+
 Vanilla's challenges are limited to only Danger0 unlocks. To extend this, ContentLoader provides a custom resource class, `CLChallengeData`, which is based on the vanilla class `ChallengeData`.
 
 Like with the other custom resource classes, to create an empty one: Right-click a folder, choose *"Create New Resource"*, and enter the class name: `CLChallengeData`.
