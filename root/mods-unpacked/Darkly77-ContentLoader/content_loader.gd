@@ -7,22 +7,28 @@ const CLOADER_LOG = "Darkly77-ContentLoader"
 # Content added via ContentLoader is added via `_install_data`, called in:
 # mods-unpacked/Darkly77-ContentLoader/extensions/singletons/progress_data.gd
 
-var items = []         # Added to ItemService.items
-var characters = []    # Added to ItemService.characters
-var weapons = []       # Added to ItemService.weapons
-var sets = []          # Added to ItemService.sets
-var challenges = []    # Added to ItemService.challenges
-var debug_items = []   # Added to DebugService.items
-var debug_weapons = [] # Added to DebugService.weapons
+var custom_items = []         # Added to ItemService.items
+var custom_characters = []    # Added to ItemService.characters
+var custom_weapons = []       # Added to ItemService.weapons
+var custom_sets = []          # Added to ItemService.sets
+var custom_challenges = []    # Added to ChallengeService.challenges
+var custom_upgrades = []      # Added to ItemService.upgrades
+var custom_consumables = []   # Added to ItemService.consumables
+var custom_debug_items = []   # Added to DebugService.items
+var custom_debug_weapons = [] # Added to DebugService.weapons
+# var custom_difficulties = []  # Added to ItemService.difficulties
 
 # Dictionary with the my_id of items as keys.
-# Can be used to find the mod name, from the item (or character/weapon/etc)
+# Can be used to find the mod name, from the content (item/character/weapon/etc)
 var lookup_data_byid = {
 	items = {},
 	characters = {},
 	weapons = {},
 	sets = {},
 	challenges = {},
+	upgrades = {},
+	consumables = {},
+	# difficulties = {},
 }
 
 # Dictionary with mod names as keys.
@@ -53,13 +59,16 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 
 	var mod_data = load(mod_data_path)
 
-	items.append_array(mod_data.items)
-	weapons.append_array(mod_data.weapons)
-	characters.append_array(mod_data.characters)
-	debug_items.append_array(mod_data.debug_items)
-	debug_weapons.append_array(mod_data.debug_weapons)
-	sets.append_array(mod_data.sets)
-	challenges.append_array(mod_data.challenges)
+	custom_items.append_array(mod_data.items)
+	custom_weapons.append_array(mod_data.weapons)
+	custom_characters.append_array(mod_data.characters)
+	custom_debug_items.append_array(mod_data.debug_items)
+	custom_debug_weapons.append_array(mod_data.debug_weapons)
+	custom_sets.append_array(mod_data.sets)
+	custom_challenges.append_array(mod_data.challenges)
+	custom_upgrades.append_array(mod_data.upgrades)
+	custom_consumables.append_array(mod_data.consumables)
+	# custom_difficulties.append_array(mod_data.difficulties)
 
 	# Save data to the lookup dictionary
 	_save_to_lookup(mod_data, mod_name)
@@ -88,81 +97,141 @@ func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-Uns
 			weapons = [],
 			sets = [],
 			challenges = [],
+			upgrades = [],
+			consumables = [],
+			# difficulties = [],
 		}
 
-	# Items
-	for i in mod_data.items.size():
-		if mod_data.items[i]:
-			var data = mod_data.items[i]
-			lookup_data_byid.items[data.my_id] = mod_name
-			lookup_data_bymod[mod_name]["items"].append(data.my_id)
+	var loop_keys = [
+		"items",
+		"characters",
+		"weapons",
+		"sets",
+		"challenges",
+		"upgrades",
+		"consumables",
+		# "difficulties",
+	]
 
-	# Characters
-	for i in mod_data.characters.size():
-		if mod_data.characters[i]:
-			var data = mod_data.characters[i]
-			lookup_data_byid.characters[data.my_id] = mod_name
-			lookup_data_bymod[mod_name]["characters"].append(data.my_id)
-	# Weapons
-	for i in mod_data.weapons.size():
-		if mod_data.weapons[i]:
-			var data = mod_data.weapons[i]
-			lookup_data_byid.weapons[data.my_id] = mod_name
-			lookup_data_bymod[mod_name]["weapons"].append(data.my_id)
-	# Sets
-	for i in mod_data.sets.size():
-		if mod_data.sets[i]:
-			var data = mod_data.sets[i]
-			lookup_data_byid.sets[data.my_id] = mod_name
-			lookup_data_bymod[mod_name]["sets"].append(data.my_id)
-	# Challenges
-	for i in mod_data.challenges.size():
-		if mod_data.challenges[i]:
-			var data = mod_data.challenges[i]
-			lookup_data_byid.challenges[data.my_id] = mod_name
-			lookup_data_bymod[mod_name]["challenges"].append(data.my_id)
+	for key_index in loop_keys.size():
+		var key = loop_keys[key_index]
+
+		for i in mod_data[key].size():
+			if mod_data[key][i]:
+				var data = mod_data[key][i]
+				lookup_data_byid[key][data.my_id] = mod_name
+				lookup_data_bymod[mod_name][key].append(data.my_id)
+
+	# Here's what the code in that loop is doing, using `items` as an example:
+	#for i in mod_data.items.size():
+		#if mod_data.items[i]:
+			#var data = mod_data.items[i]
+			#lookup_data_byid.items[data.my_id] = mod_name
+			#lookup_data_bymod[mod_name]["items"].append(data.my_id)
+
+	# Items
+	# for i in mod_data.items.size():
+	# 	if mod_data.items[i]:
+	# 		var data = mod_data.items[i]
+	# 		lookup_data_byid.items[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["items"].append(data.my_id)
+
+	# # Characters
+	# for i in mod_data.characters.size():
+	# 	if mod_data.characters[i]:
+	# 		var data = mod_data.characters[i]
+	# 		lookup_data_byid.characters[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["characters"].append(data.my_id)
+	# # Weapons
+	# for i in mod_data.weapons.size():
+	# 	if mod_data.weapons[i]:
+	# 		var data = mod_data.weapons[i]
+	# 		lookup_data_byid.weapons[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["weapons"].append(data.my_id)
+	# # Sets
+	# for i in mod_data.sets.size():
+	# 	if mod_data.sets[i]:
+	# 		var data = mod_data.sets[i]
+	# 		lookup_data_byid.sets[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["sets"].append(data.my_id)
+
+	# # Challenges
+	# for i in mod_data.challenges.size():
+	# 	if mod_data.challenges[i]:
+	# 		var data = mod_data.challenges[i]
+	# 		lookup_data_byid.challenges[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["challenges"].append(data.my_id)
+
+	# # Upgrades
+	# for i in mod_data.upgrades.size():
+	# 	if mod_data.upgrades[i]:
+	# 		var data = mod_data.upgrades[i]
+	# 		lookup_data_byid.upgrades[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["upgrades"].append(data.my_id)
+
+	# # Difficulties
+	# for i in mod_data.difficulties.size():
+	# 	if mod_data.difficulties[i]:
+	# 		var data = mod_data.difficulties[i]
+	# 		lookup_data_byid.difficulties[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["difficulties"].append(data.my_id)
+
+	# # Consumables
+	# for i in mod_data.consumables.size():
+	# 	if mod_data.consumables[i]:
+	# 		var data = mod_data.consumables[i]
+	# 		lookup_data_byid.consumables[data.my_id] = mod_name
+	# 		lookup_data_bymod[mod_name]["consumables"].append(data.my_id)
 
 
 # Internal method that adds all custom content to the main game's pools
 # (via extensions/singletons/progress_data.gd)
 func _install_data():
 	ModLoaderUtils.log_info(str("Installing ContentData"), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("items -> ", items), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("weapons -> ", weapons), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("sets -> ", sets), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("characters -> ", characters), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("challenges -> ", challenges), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("debug_items -> ", debug_items), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("debug_weapons -> ", debug_weapons), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("items -> ", custom_items), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("weapons -> ", custom_weapons), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("sets -> ", custom_sets), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("characters -> ", custom_characters), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("challenges -> ", custom_challenges), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("upgrades -> ", custom_upgrades), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("consumables -> ", custom_consumables), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("debug_items -> ", custom_debug_items), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("debug_weapons -> ", custom_debug_weapons), CLOADER_LOG)
 
 	# Add loaded content to the game
-	ItemService.items.append_array(items)
-	ItemService.weapons.append_array(weapons)
-	ItemService.characters.append_array(characters)
-	ItemService.sets.append_array(sets) # @since 2.1.0
-	ChallengeService.challenges.append_array(challenges) # @since 2.1.0
+	ItemService.items.append_array(custom_items)
+	ItemService.weapons.append_array(custom_weapons)
+	ItemService.characters.append_array(custom_characters)
+	ItemService.sets.append_array(custom_sets) # @since 2.1.0
+	ChallengeService.challenges.append_array(custom_challenges) # @since 2.1.0
+	ItemService.upgrades.append_array(custom_upgrades) # @since 6.0.0
+	ItemService.consumables.append_array(custom_consumables) # @since 6.0.0
 
 	# Add debug items (which makes you always start with them)
 	DebugService.debug_items = DebugService.debug_items.duplicate() # this is needed in case the array is empty
 	DebugService.debug_weapons = DebugService.debug_weapons.duplicate()
-	DebugService.debug_items.append_array(debug_items)
-	DebugService.debug_weapons.append_array(debug_weapons)
+	DebugService.debug_items.append_array(custom_debug_items)
+	DebugService.debug_weapons.append_array(custom_debug_weapons)
 
 	# Debug: Log all loaded content
-	for character in characters:
-		ModLoaderUtils.log_debug("Added Character: " + tr(character.name), CLOADER_LOG)
-	for item in items:
-		ModLoaderUtils.log_debug("Added Item: " + tr(item.name), CLOADER_LOG)
-	for weapon in weapons:
+	for character in custom_characters:
+		ModLoaderUtils.log_debug("Added Character: " + tr(character.name) + " (" + character.my_id + ")", CLOADER_LOG)
+	for item in custom_items:
+		ModLoaderUtils.log_debug("Added Item: " + tr(item.name) + " (" + item.my_id + ")", CLOADER_LOG)
+	for weapon in custom_weapons:
 		ModLoaderUtils.log_debug("Added Weapon: " + tr(weapon.name) + " (" + weapon.my_id + ")", CLOADER_LOG)
-	for debug_item in debug_items:
+	for debug_item in custom_debug_items:
 		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_item.name), CLOADER_LOG)
-	for debug_weapon in debug_weapons:
+	for debug_weapon in custom_debug_weapons:
 		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_weapon.name), CLOADER_LOG)
-	for set in sets:
-		ModLoaderUtils.log_debug("Added Set: " + tr(set.name), CLOADER_LOG)
-	for challenge in challenges:
-		ModLoaderUtils.log_debug("Added Challenge: " + tr(challenge.name), CLOADER_LOG)
+	for set in custom_sets:
+		ModLoaderUtils.log_debug("Added Set: " + tr(set.name) + " (" + set.my_id + ")", CLOADER_LOG)
+	for challenge in custom_challenges:
+		ModLoaderUtils.log_debug("Added Challenge: " + tr(challenge.name) + " (" + challenge.my_id + ")", CLOADER_LOG)
+	for upgrade in custom_upgrades:
+		ModLoaderUtils.log_debug("Added Upgrade: " + tr(upgrade.name) + " (" + upgrade.my_id + ")", CLOADER_LOG)
+	for consumable in custom_consumables:
+		ModLoaderUtils.log_debug("Added Consumable: " + tr(consumable.name) + " (" + consumable.my_id + ")", CLOADER_LOG)
 
 	# Debug: Test if your weapon was added to a specific character
 #	for character in ItemService.characters:
@@ -178,21 +247,31 @@ func _install_data():
 # Loop over the added content. If its `unlocked_by_default` is true, make sure
 # add it to the arrays of unlocked content (which is required to make them appear
 # in pools)
-# @todo: Can we also *lock* items that have `unlocked_by_default` as false?
+# Reference: `init_unlocked_pool` in item_service.gd
+# Reference: `add_unlocked_by_default` in progress_data.gd
+# @todo: Should we also *lock* items that have `unlocked_by_default` as false?
 func _add_unlocked_by_default_without_leak():
-	for item in items:
+	for item in custom_items:
 		if item.unlocked_by_default and not ProgressData.items_unlocked.has(item.my_id):
 			ProgressData.items_unlocked.push_back(item.my_id)
 
-	for weapon in weapons:
-		if weapon.unlocked_by_default and not ProgressData.weapons_unlocked.has(weapon.weapon_id):
+	for weapon in custom_weapons:
+		if weapon.unlocked_by_default and not ProgressData.weapons_unlocked.has(weapon.weapon_id): #@note: NOT my_id
 			ProgressData.weapons_unlocked.push_back(weapon.weapon_id)
 
-	for character in characters:
+	for character in custom_characters:
 		if character.unlocked_by_default and not ProgressData.characters_unlocked.has(character.my_id):
 			ProgressData.characters_unlocked.push_back(character.my_id)
 
-	# This sets up custom characters to have the data they need for them to
+	for upgrade in custom_upgrades:
+		if upgrade.unlocked_by_default and not ProgressData.upgrades_unlocked.has(upgrade.upgrade_id): #@note: NOT my_id
+			ProgressData.upgrades_unlocked.push_back(upgrade.upgrade_id)
+
+	for consumable in custom_consumables:
+		if consumable.unlocked_by_default and not ProgressData.consumables_unlocked.has(consumable.my_id):
+			ProgressData.consumables_unlocked.push_back(consumable.my_id)
+
+	# This sets up custom characters to have the data that's needed for them to
 	# show correctly in the character selection screen
 	for character in ItemService.characters:
 		var character_diff_info = CharacterDifficultyInfo.new(character.my_id)
@@ -202,6 +281,20 @@ func _add_unlocked_by_default_without_leak():
 				character_diff_info.zones_difficulty_info.push_back(ZoneDifficultyInfo.new(zone.my_id))
 
 		ProgressData.difficulties_unlocked.push_back(character_diff_info)
+
+	# DIFFICULTIES
+	#
+	# Disabled because it causes a crash. Needs a special fix. Also note that
+	# this would require increasing `max_selectable_difficulty` and `max_difficulty`
+	# variables, and may not actually be possible due to the hardcoded constant
+	# of ProgressData.MAX_DIFFICULTY
+	#
+	# See: `apply_run_won` in main.gd
+	# See: `parsed_difficulties` in progress_data.gd
+	#
+	#for difficulty in custom_difficulties:
+		#if difficulty.unlocked_by_default and not ProgressData.difficulties_unlocked.has(difficulty.my_id):
+			#ProgressData.difficulties_unlocked.push_back(difficulty.my_id)
 
 
 # Utility Funcs (Public)
@@ -219,8 +312,8 @@ func _add_unlocked_by_default_without_leak():
 # It may also return `UnspecifiedAuthor-UnspecifiedModName`, which means the mod
 # developer didn't pass their `mod_name` string when using `load_data`.
 #
-# Example: lookup_mod_item("weapon", "weapon_alien_arm_1")
-func lookup_mod_item(type:String, item_id:String) -> String:
+# Example: lookup_modname_by_itemid("weapon", "weapon_alien_arm_1")
+func lookup_modname_by_itemid(item_id:String, type:String) -> String:
 	var key = ""
 	match type:
 		"item":
@@ -235,6 +328,10 @@ func lookup_mod_item(type:String, item_id:String) -> String:
 			key = "challenges"
 		"upgrade":
 			key = "upgrades"
+		"consumable":
+			key = "consumables"
+		# "difficulty":
+			# key = "difficulties"
 
 	if lookup_data_byid[key].has(item_id):
 		return lookup_data_byid[key][item_id]
@@ -242,28 +339,22 @@ func lookup_mod_item(type:String, item_id:String) -> String:
 		return "CL_Notice-NotFound"
 
 
-func lookup_mod_item_auto(item_data) -> String:
+func lookup_modname_by_itemdata(item_data) -> String:
 	if item_data is ItemData:
-		return lookup_mod_item("item", item_data.my_id)
-
+		return lookup_modname_by_itemid(item_data.my_id, "item")
 	elif item_data is CharacterData:
-		return lookup_mod_item("character", item_data.my_id)
-
-	if item_data is WeaponData:
-		return lookup_mod_item("weapon", item_data.my_id)
-
+		return lookup_modname_by_itemid(item_data.my_id, "character")
+	elif item_data is WeaponData:
+		return lookup_modname_by_itemid(item_data.my_id, "weapon")
 	elif item_data is SetData:
-		return lookup_mod_item("set", item_data.my_id)
-
+		return lookup_modname_by_itemid(item_data.my_id, "set")
 	elif item_data is ChallengeData: # also applies to ExpandedChallengeData
-		return lookup_mod_item("challenge", item_data.my_id)
-
+		return lookup_modname_by_itemid(item_data.my_id, "challenge")
+	elif item_data is UpgradeData:
+		return lookup_modname_by_itemid(item_data.my_id, "upgrade")
+	elif item_data is ConsumableData:
+		return lookup_modname_by_itemid(item_data.my_id, "consumable")
+	# elif item_data is DifficultyData:
+		# return lookup_modname_by_itemid(item_data.my_id, "difficulty")
 	else:
 		return "CL_Error-UnknownType"
-
-	# Not implemented:
-
-	# elif item_data is UpgradeData:
-		# return lookup_mod_item("upgrade", item_data.my_id)
-	# elif item_data is DifficultyData:
-		# return lookup_mod_item("difficulty", item_data.my_id)
