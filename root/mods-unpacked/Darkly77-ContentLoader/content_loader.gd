@@ -204,8 +204,8 @@ func _install_data():
 	ItemService.characters.append_array(custom_characters)
 	ItemService.sets.append_array(custom_sets) # @since 2.1.0
 	ChallengeService.challenges.append_array(custom_challenges) # @since 2.1.0
-	ItemService.upgrades.append_array(custom_upgrades) # @since 6.0.0
-	ItemService.consumables.append_array(custom_consumables) # @since 6.0.0
+	ItemService.upgrades.append_array(custom_upgrades) # @since 5.3.0
+	ItemService.consumables.append_array(custom_consumables) # @since 5.3.0
 
 	# Add debug items (which makes you always start with them)
 	DebugService.debug_items = DebugService.debug_items.duplicate() # this is needed in case the array is empty
