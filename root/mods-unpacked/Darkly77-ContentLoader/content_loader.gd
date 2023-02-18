@@ -271,22 +271,22 @@ func _add_unlocked_by_default_without_leak():
 func lookup_modname_by_itemid(item_id:String, type:String) -> String:
 	var key = ""
 	match type:
-		"item":
-			key = "items"
 		"character":
 			key = "characters"
-		"weapon":
-			key = "weapons"
-		"set":
-			key = "sets"
 		"challenge":
 			key = "challenges"
-		"upgrade":
-			key = "upgrades"
 		"consumable":
 			key = "consumables"
 		"elite":
 			key = "elites"
+		"item":
+			key = "items"
+		"set":
+			key = "sets"
+		"upgrade":
+			key = "upgrades"
+		"weapon":
+			key = "weapons"
 		# "difficulty":
 			# key = "difficulties"
 
@@ -298,11 +298,11 @@ func lookup_modname_by_itemid(item_id:String, type:String) -> String:
 
 func lookup_modname_by_itemdata(item_data) -> String:
 	if item_data is CharacterData:    return lookup_modname_by_itemid(item_data.my_id, "character")
-	elif item_data is WeaponData:     return lookup_modname_by_itemid(item_data.my_id, "weapon")
-	elif item_data is SetData:        return lookup_modname_by_itemid(item_data.my_id, "set")
 	elif item_data is ChallengeData:  return lookup_modname_by_itemid(item_data.my_id, "challenge") # Also applies to ExpandedChallengeData
-	elif item_data is UpgradeData:    return lookup_modname_by_itemid(item_data.my_id, "upgrade")
 	elif item_data is ConsumableData: return lookup_modname_by_itemid(item_data.my_id, "consumable")
+	elif item_data is SetData:        return lookup_modname_by_itemid(item_data.my_id, "set")
+	elif item_data is UpgradeData:    return lookup_modname_by_itemid(item_data.my_id, "upgrade")
+	elif item_data is WeaponData:     return lookup_modname_by_itemid(item_data.my_id, "weapon")
 	elif item_data is EnemyData:      return lookup_modname_by_itemid(item_data.my_id, "elite")
 
 	# ItemData has to be checked last, because many other classes extend it
