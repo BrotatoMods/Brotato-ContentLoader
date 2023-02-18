@@ -2,15 +2,29 @@
 
 ![GitHub all releases](https://img.shields.io/github/downloads/BrotatoMods/Brotato-ContentLoader/total) [^1]
 
-ContentLoader makes it easy to add new content to Brotato. You can add:
+ContentLoader makes it easy to add new content to Brotato.
 
-- Characters
-- Items
-- Weapons
-- Weapon Sets
-- Challenges (for all danger levels)
+You can add: *Characters, Items, Weapons, Weapon Sets, Challenges (for all danger levels).*
 
-*For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.*
+For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.
+
+## TOC
+
+- [Requirements](#requirements)
+- [Structure](#structure)
+- [Adding Content](#adding-content)
+- [ContentData Resources](#contentdata-resources)
+- [Items](#items)
+- [Characters](#characters)
+- [Weapons](#weapons)
+- [Weapon's Characters](#weapons-characters)
+- [Weapon Sets (Classes)](#weapon-sets-classes)
+- [Challenges](#challenges)
+    - [CLChallengeData](#clchallengedata)
+    - [Translation Strings](#translation-strings)
+- [Debug Items](#debug-items)
+- [Appendix](#appendix)
+
 
 ## Requirements
 
