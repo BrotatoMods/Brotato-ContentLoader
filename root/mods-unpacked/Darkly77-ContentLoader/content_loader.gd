@@ -239,13 +239,19 @@ func _add_unlocked_by_default_without_leak():
 
 	# DIFFICULTIES
 	#
-	# Disabled because it causes a crash. Needs a special fix. Also note that
-	# this would require increasing `max_selectable_difficulty` and `max_difficulty`
-	# variables, and may not actually be possible due to the hardcoded constant
-	# of ProgressData.MAX_DIFFICULTY
+	# This commented approach is wrong. `ProgressData.difficulties_unlocked`
+	# is actually an array of CharacterDifficultyInfo objects
+	#
+	# See difficulty_selection.gd for potential clues, maybe also DifficultyData
+	#
+	# Also note that increasing the number of difficulties this would require
+	# increasing `max_selectable_difficulty` and `max_difficulty` variables,
+	# and may not actually be possible due to the hardcoded constant of
+	# ProgressData.MAX_DIFFICULTY
 	#
 	# See: `apply_run_won` in main.gd
-	# See: `parsed_difficulties` in progress_data.gd
+	# See: `parsed_difficulties` in progress_data.gd (altho this is misleading)
+	# See: difficulty_selection.gd
 	#
 	#for difficulty in custom_difficulties:
 		#if difficulty.unlocked_by_default and not ProgressData.difficulties_unlocked.has(difficulty.my_id):
