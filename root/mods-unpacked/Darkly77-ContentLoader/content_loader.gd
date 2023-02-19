@@ -15,9 +15,9 @@ var custom_challenges = []    # Added to ChallengeService.challenges
 var custom_upgrades = []      # Added to ItemService.upgrades
 var custom_consumables = []   # Added to ItemService.consumables
 var custom_elites = []        # Added to ItemService.elites
+var custom_difficulties = []  # Added to ItemService.difficulties
 var custom_debug_items = []   # Added to DebugService.items
 var custom_debug_weapons = [] # Added to DebugService.weapons
-# var custom_difficulties = []  # Added to ItemService.difficulties
 
 # Dictionary with the my_id of items as keys.
 # Can be used to find the mod name, from the content (item/character/weapon/etc)
@@ -30,7 +30,7 @@ var lookup_data_byid = {
 	upgrades = {},
 	consumables = {},
 	elites = {},
-	# difficulties = {},
+	difficulties = {},
 }
 
 # Dictionary with mod names as keys.
@@ -71,7 +71,7 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 	custom_upgrades.append_array(mod_data.upgrades)
 	custom_consumables.append_array(mod_data.consumables)
 	custom_elites.append_array(mod_data.elites)
-	# custom_difficulties.append_array(mod_data.difficulties)
+	custom_difficulties.append_array(mod_data.difficulties)
 
 	# Save data to the lookup dictionary
 	_save_to_lookup(mod_data, mod_name)
@@ -103,7 +103,7 @@ func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-Uns
 			upgrades = [],
 			consumables = [],
 			elites = [],
-			# difficulties = [],
+			difficulties = [],
 		}
 
 	var loop_keys = [
@@ -115,7 +115,7 @@ func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-Uns
 		"upgrades",
 		"consumables",
 		"elites",
-		# "difficulties",
+		"difficulties",
 	]
 
 	for key_index in loop_keys.size():
@@ -147,6 +147,7 @@ func _install_data():
 	ModLoaderUtils.log_debug(str("upgrades -> ", custom_upgrades), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("consumables -> ", custom_consumables), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("elites -> ", custom_elites), CLOADER_LOG)
+	ModLoaderUtils.log_debug(str("difficulties -> ", custom_difficulties), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("debug_items -> ", custom_debug_items), CLOADER_LOG)
 	ModLoaderUtils.log_debug(str("debug_weapons -> ", custom_debug_weapons), CLOADER_LOG)
 
@@ -154,11 +155,12 @@ func _install_data():
 	ItemService.items.append_array(custom_items)
 	ItemService.weapons.append_array(custom_weapons)
 	ItemService.characters.append_array(custom_characters)
-	ItemService.sets.append_array(custom_sets) # @since 2.1.0
+	ItemService.sets.append_array(custom_sets)                  # @since 2.1.0
 	ChallengeService.challenges.append_array(custom_challenges) # @since 2.1.0
-	ItemService.upgrades.append_array(custom_upgrades) # @since 5.3.0
-	ItemService.consumables.append_array(custom_consumables) # @since 5.3.0
-	ItemService.elites.append_array(custom_elites) # @since 5.3.0
+	ItemService.upgrades.append_array(custom_upgrades)          # @since 5.3.0
+	ItemService.consumables.append_array(custom_consumables)    # @since 5.3.0
+	ItemService.elites.append_array(custom_elites)              # @since 5.3.0
+	ItemService.difficulties.append_array(custom_difficulties)  # @since 6.1.0
 
 	# Add debug items (which makes you always start with them)
 	DebugService.debug_items = DebugService.debug_items.duplicate() # this is needed in case the array is empty
@@ -186,7 +188,9 @@ func _install_data():
 	for consumable in custom_consumables:
 		ModLoaderUtils.log_debug("Added Consumable: " + tr(consumable.name) + " (" + consumable.my_id + ")", CLOADER_LOG)
 	for elite in custom_elites:
-		ModLoaderUtils.log_debug("Added Consumable: " + elite.my_id, CLOADER_LOG)
+		ModLoaderUtils.log_debug("Added Elite: " + elite.my_id, CLOADER_LOG)
+	for difficulty in custom_difficulties:
+		ModLoaderUtils.log_debug("Added Difficulty: " + tr(difficulty.name) + " (" + difficulty.my_id + ")", CLOADER_LOG)
 
 	# Debug: Test if your weapon was added to a specific character
 #	for character in ItemService.characters:
@@ -235,27 +239,20 @@ func _add_unlocked_by_default_without_leak():
 			if zone.unlocked_by_default:
 				character_diff_info.zones_difficulty_info.push_back(ZoneDifficultyInfo.new(zone.my_id))
 
+		# Note that this IS NOT an array of actual difficulties.
+		# It's actually an array of CharacterDifficultyInfo objects.
+		# Search your save file for `zones_difficulty_info` to see how it looks
 		ProgressData.difficulties_unlocked.push_back(character_diff_info)
 
 	# DIFFICULTIES
 	#
-	# This commented approach is wrong. `ProgressData.difficulties_unlocked`
-	# is actually an array of CharacterDifficultyInfo objects
+	# Not needed. But here's some files that use difficulty, for reference:
 	#
-	# See difficulty_selection.gd for potential clues, maybe also DifficultyData
+	# See: difficulty_selection.gd -> get_elements_unlocked
+	# See: main.gd -> apply_run_won
 	#
-	# Also note that increasing the number of difficulties this would require
-	# increasing `max_selectable_difficulty` and `max_difficulty` variables,
-	# and may not actually be possible due to the hardcoded constant of
-	# ProgressData.MAX_DIFFICULTY
-	#
-	# See: `apply_run_won` in main.gd
-	# See: `parsed_difficulties` in progress_data.gd (altho this is misleading)
-	# See: difficulty_selection.gd
-	#
-	#for difficulty in custom_difficulties:
-		#if difficulty.unlocked_by_default and not ProgressData.difficulties_unlocked.has(difficulty.my_id):
-			#ProgressData.difficulties_unlocked.push_back(difficulty.my_id)
+	# But ignore pretty much anything in progress_data.gd, that's all related
+	# to the CharacterDifficultyInfo objects
 
 
 # Utility Funcs (Public)
@@ -293,8 +290,8 @@ func lookup_modid_by_itemid(item_id:String, type:String) -> String:
 			key = "upgrades"
 		"weapon":
 			key = "weapons"
-		# "difficulty":
-			# key = "difficulties"
+		"difficulty":
+			key = "difficulties"
 
 	if lookup_data_byid[key].has(item_id):
 		return lookup_data_byid[key][item_id]
@@ -310,13 +307,11 @@ func lookup_modid_by_itemdata(item_data) -> String:
 	elif item_data is UpgradeData:    return lookup_modid_by_itemid(item_data.my_id, "upgrade")
 	elif item_data is WeaponData:     return lookup_modid_by_itemid(item_data.my_id, "weapon")
 	elif item_data is EnemyData:      return lookup_modid_by_itemid(item_data.my_id, "elite")
+	elif item_data is DifficultyData: return lookup_modid_by_itemid(item_data.my_id, "difficulty")
 
 	# ItemData has to be checked last, because many other classes extend it
-	# (CharacterData, ConsumableData, UpgradeData)
+	# (CharacterData, ConsumableData, UpgradeData) so it would be `true` for them
 	elif item_data is ItemData:       return lookup_modid_by_itemid(item_data.my_id, "item")
-
-	# Difficulty is disabled due to issues
-	# elif item_data is DifficultyData: return lookup_modid_by_itemid(item_data.my_id, "difficulty")
 
 	else:
 		return "CL_Error-UnknownType"
