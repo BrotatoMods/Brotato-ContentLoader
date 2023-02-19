@@ -20,8 +20,6 @@ For references, see the mods that use ContentLoader in [Notable Mods](#notable-m
 - [Weapon's Characters](#weapons-characters)
 - [Weapon Sets (Classes)](#weapon-sets-classes)
 - [Challenges](#challenges)
-    - [CLChallengeData](#clchallengedata)
-    - [Translation Strings](#translation-strings)
 - [Debug Items](#debug-items)
 - [Appendix](#appendix)
 
