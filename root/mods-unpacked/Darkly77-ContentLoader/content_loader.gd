@@ -228,7 +228,7 @@ func _add_unlocked_by_default_without_leak():
 
 	# This sets up custom characters to have the data that's needed for them to
 	# show correctly in the character selection screen
-	for character in ItemService.characters:
+	for character in custom_characters:
 		var character_diff_info = CharacterDifficultyInfo.new(character.my_id)
 
 		for zone in ZoneService.zones:
