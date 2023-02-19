@@ -78,6 +78,8 @@ To create a new ContentData resource:
 - Choose the resource shown (it's the *content_data.gd* file)
 - You can now add your content by dragging your data files into the respective arrays.
 
+> ℹ *Note: Godot may have an issue where `ContentData` is not available when trying to create a new resource. To fix this, ContentLoader provides an empty ContentData resrouce called* **EXAMPLE.tres**. *It's in ContentLoader's [main mod folder](https://github.com/BrotatoMods/Brotato-ContentLoader/tree/main/root/mods-unpacked/Darkly77-ContentLoader), and you can duplicate this file into your own mod's folders.*
+
 > 💡 *Tip: Once you've created your first ContentData resource, you can create another one quickly by right-clicking it and choosing Duplicate (or click it and use the keyboard shortcut <kbd>Ctrl</kbd> + <kbd>D</kbd>.*
 
 By default, a new ContentData resource looks like this:
