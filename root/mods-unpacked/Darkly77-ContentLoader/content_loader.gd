@@ -267,8 +267,8 @@ func _add_unlocked_by_default_without_leak():
 # It may also return `UnspecifiedAuthor-UnspecifiedModName`, which means the mod
 # developer didn't pass their `mod_name` string when using `load_data`.
 #
-# Example: lookup_modname_by_itemid("weapon", "weapon_alien_arm_1")
-func lookup_modname_by_itemid(item_id:String, type:String) -> String:
+# Example: lookup_modid_by_itemid("weapon", "weapon_alien_arm_1")
+func lookup_modid_by_itemid(item_id:String, type:String) -> String:
 	var key = ""
 	match type:
 		"character":
@@ -296,21 +296,21 @@ func lookup_modname_by_itemid(item_id:String, type:String) -> String:
 		return "CL_Notice-NotFound"
 
 
-func lookup_modname_by_itemdata(item_data) -> String:
-	if item_data is CharacterData:    return lookup_modname_by_itemid(item_data.my_id, "character")
-	elif item_data is ChallengeData:  return lookup_modname_by_itemid(item_data.my_id, "challenge") # Also applies to ExpandedChallengeData
-	elif item_data is ConsumableData: return lookup_modname_by_itemid(item_data.my_id, "consumable")
-	elif item_data is SetData:        return lookup_modname_by_itemid(item_data.my_id, "set")
-	elif item_data is UpgradeData:    return lookup_modname_by_itemid(item_data.my_id, "upgrade")
-	elif item_data is WeaponData:     return lookup_modname_by_itemid(item_data.my_id, "weapon")
-	elif item_data is EnemyData:      return lookup_modname_by_itemid(item_data.my_id, "elite")
+func lookup_modid_by_itemdata(item_data) -> String:
+	if item_data is CharacterData:    return lookup_modid_by_itemid(item_data.my_id, "character")
+	elif item_data is ChallengeData:  return lookup_modid_by_itemid(item_data.my_id, "challenge") # Also applies to ExpandedChallengeData
+	elif item_data is ConsumableData: return lookup_modid_by_itemid(item_data.my_id, "consumable")
+	elif item_data is SetData:        return lookup_modid_by_itemid(item_data.my_id, "set")
+	elif item_data is UpgradeData:    return lookup_modid_by_itemid(item_data.my_id, "upgrade")
+	elif item_data is WeaponData:     return lookup_modid_by_itemid(item_data.my_id, "weapon")
+	elif item_data is EnemyData:      return lookup_modid_by_itemid(item_data.my_id, "elite")
 
 	# ItemData has to be checked last, because many other classes extend it
 	# (CharacterData, ConsumableData, UpgradeData)
-	elif item_data is ItemData:       return lookup_modname_by_itemid(item_data.my_id, "item")
+	elif item_data is ItemData:       return lookup_modid_by_itemid(item_data.my_id, "item")
 
 	# Difficulty is disabled due to issues
-	# elif item_data is DifficultyData: return lookup_modname_by_itemid(item_data.my_id, "difficulty")
+	# elif item_data is DifficultyData: return lookup_modid_by_itemid(item_data.my_id, "difficulty")
 
 	else:
 		return "CL_Error-UnknownType"
