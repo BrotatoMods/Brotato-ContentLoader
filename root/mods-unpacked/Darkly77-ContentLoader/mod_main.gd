@@ -25,17 +25,6 @@ func _ready():
 # =============================================================================
 
 func _install_extensions(modLoader):
-	# TRANSLATIONS
-	# @todo: Remove, all CSV stuff was for challenges
-	modLoader.add_translation_from_resource(dir + "translations/mod_contentloader_text.en.translation")
-
-	# CHALLENGES
-	# Eg. Danger 5 with X character
-	# @todo: Remove all this stuff
-	modLoader.install_script_extension(dir + "extensions/main.gd") # Patch `clean_up_room` to run our custom challenge unlock func
-	modLoader.install_script_extension(dir + "extensions/singletons/challenge_service.gd") # Challenge checks
-	modLoader.install_script_extension(dir + "extensions/singletons/run_data.gd") # Patch `add_weapon` and `add_item` to check custom challenges
-
 	# DEFERRED SETUP
 	# This runs ContentLoader._install_data(), but running that func needs to be
 	# deferred until after progress_data has finished setting vanilla things up

@@ -1,9 +1,0 @@
-keys,en
-CL_CHAL_CHAR_DANGER_0,Win a run with {0}
-CL_CHAL_CHAR_DANGER_ANY,Win a run in Danger {1} with {0}
-CL_CHAL_STAT,Reach {6} {7}
-CL_CHAL_HOLD_ITEMS_ALL,Hold all of these items at the same time: \n{4}
-CL_CHAL_HOLD_ITEMS_ANY,Hold any of these items at the same time: \n{4}
-CL_CHAL_HOLD_WEAPONS_ALL,Hold all of these weapons at the same time: \n{4}
-CL_CHAL_HOLD_WEAPONS_ANY,Hold any of these weapons at the same time: \n{4}
-CL_CHAL_TEST_ALL_OPTIONS,"Win a run in danger {1} with character ({0}); \nwhile holding these weapons: {2}; \nas well as either of these weapons: {3}; \nand these items: {4}; \nand either of these items: {5}"
