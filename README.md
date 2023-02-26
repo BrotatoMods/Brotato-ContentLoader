@@ -161,6 +161,20 @@ It is used by [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod) to
 
 ## Appendix
 
+### Purpose
+
+ContentLoader adds content to `ItemService`, which is possible without using ContentLoader.
+
+However, it also performs a number of other important functions, including:
+
+- Safely adds custom content to `ProgressData.upgrades_unlocked`.
+- Initialises custom characters *(which need to have their own `CharacterDifficultyInfo` object)*.
+- Adds custom weapons to corresponding characters.
+- Duplicates the debug_items and debug_weapons arrays before adding to them *(which fixes a critical issue in Godot's engine)*.
+- Tracks all added content *(allowing any mod to see what content has been added, and by which mod)*.
+- Re-runs the applicable vanilla funcs after adding content.
+
+
 ### Notable Mods
 
 The mods listed here were created or ported by Darkly77, ContentLoader's lead developer. They show how to use its various features in a standardised way.
