@@ -61,7 +61,7 @@ func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-Unsp
 
 	var mod_data = load(mod_data_path)
 
-	_add_mod_data(mod_data)
+	_add_mod_data(mod_data, mod_name)
 
 
 # Adds missing keys with empty arrays to a provided mod_data dictionary. This
@@ -85,7 +85,7 @@ func load_data_by_dictionary(mod_data_dict: Dictionary, mod_name: String = "Unsp
 		if not mod_data_dict.has(default_key):
 			mod_data_dict[default_key] = []
 
-	_add_mod_data(mod_data_dict)
+	_add_mod_data(mod_data_dict, mod_name)
 
 
 # Private
