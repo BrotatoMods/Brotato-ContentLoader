@@ -1,4 +1,4 @@
-extends "res://singletons/progress_data.gd"
+extends "res://singletons/debug_service.gd"
 
 # We're extending progress_data here because we need the game to finish loading
 # its data before we can add items

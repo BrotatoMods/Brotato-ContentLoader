@@ -48,7 +48,7 @@ var lookup_data_bymod = {}
 # =============================================================================
 
 # Helper method available to mods
-func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedModName"):
+func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
 	var from_mod_text = ""
 	if mod_name != "":
 		from_mod_text = " (via "+ mod_name +")"
@@ -61,6 +61,38 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 
 	var mod_data = load(mod_data_path)
 
+	_add_mod_data(mod_data)
+
+
+# Adds missing keys with empty arrays to a provided mod_data dictionary. This
+# allows modders to pass a dictionary with just a single key, eg:
+# `var mod_data_dictionary = { "items": [] }`
+# @since 6.2.0
+func load_data_by_dictionary(mod_data_dict: Dictionary, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
+	var default_keys := [
+		"items",
+		"characters",
+		"weapons",
+		"sets",
+		"challenges",
+		"upgrades",
+		"consumables",
+		"elites",
+		"difficulties",
+	]
+
+	for default_key in default_keys:
+		if not mod_data_dict.has(default_key):
+			mod_data_dict[default_key] = []
+
+	_add_mod_data(mod_data_dict)
+
+
+# Private
+# =============================================================================
+
+# Adds mod data to the local variables
+func _add_mod_data(mod_data, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
 	custom_items.append_array(mod_data.items)
 	custom_weapons.append_array(mod_data.weapons)
 	custom_characters.append_array(mod_data.characters)
@@ -86,9 +118,6 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 				# for weapon in character.starting_weapons:
 					# ModLoaderUtils.log_debug(str("weapon.my_id -> ", weapon.my_id), CLOADER_LOG)
 
-
-# Private
-# =============================================================================
 
 # Save data to the lookup dictionary
 func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-UnspecifiedModName"):
