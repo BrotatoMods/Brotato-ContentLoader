@@ -27,8 +27,11 @@ func _ready():
 func _install_extensions(modLoader):
 	# DEFERRED SETUP
 	# This runs ContentLoader._install_data(), but running that func needs to be
-	# deferred until after progress_data has finished setting vanilla things up
-	modLoader.install_script_extension(ext_dir + "singletons/progress_data.gd")
+	# deferred until after progress_data has finished setting vanilla things up.
+	# Note: Originally, this extended progress_data, but was changed to the
+	# last autoload (DebugService/debug_service) to allow other mods to also
+	# wait for ProgressData (or ItemService) to be ready first
+	modLoader.install_script_extension(ext_dir + "singletons/debug_service.gd")
 
 
 # Add ContentLoader as a child of this node (which itself is a child of ModLoader)

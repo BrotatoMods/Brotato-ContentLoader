@@ -1,7 +1,6 @@
 class_name ContentLoader
 extends Node
 
-var ContentData = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
 const CLOADER_LOG = "Darkly77-ContentLoader"
 
 # Content added via ContentLoader is added via `_install_data`, called in:
@@ -47,8 +46,8 @@ var lookup_data_bymod = {}
 # Main
 # =============================================================================
 
-# Helper method available to mods
-func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedModName"):
+# Add content via a ContentData resource (.tres file)
+func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
 	var from_mod_text = ""
 	if mod_name != "":
 		from_mod_text = " (via "+ mod_name +")"
@@ -61,6 +60,55 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 
 	var mod_data = load(mod_data_path)
 
+	_add_mod_data(mod_data, mod_name)
+
+
+# Add content via a dictionary.
+# Note that you'll need to have created textures from any images on disk (you
+# can use Brotils for this, via `brotils_create_texture_from_image_path`)
+# Supports passing a dictionary with a single key, eg:
+#   var content_data_dictionary = { "items": [] }
+# @since 6.2.0
+func load_data_by_dictionary(content_data_dict: Dictionary, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
+	var valid_keys := [
+		"items",         # ItemData
+		"characters",    # CharacterData
+		"weapons",       # WeaponData
+		"sets",          # SetData
+		"challenges",    # ChallengeData / ExpandedChallengeData
+		"upgrades",      # UpgradeData
+		"consumables",   # ConsumableData
+		"elites",        # Enemydata
+		"difficulties",  # DifficultyData
+		"debug_items",   # ItemData
+		"debug_weapons", # WeaponData
+	]
+
+	var mod_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+
+	for key in valid_keys:
+		if content_data_dict.has(key):
+			mod_data[key] = content_data_dict[key]
+
+	_add_mod_data(mod_data, mod_name)
+
+
+# Load content from an instance of ContentData. Mods can't use global classes,
+# so you need to load the class before you create a new instance of it, eg:
+#   var content_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+# Note: There may be an issue with adding things to the empty arrays of a new
+# ContentData instance, and this can cause your content to be added to every
+# array. To fix this, duplicate your empty arrays before adding to them.
+# Search for `debug_items.duplicate` in the code below to see how this is done
+func load_data_by_content_data(content_data, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
+	_add_mod_data(content_data, mod_name)
+
+
+# Private
+# =============================================================================
+
+# Adds mod data to the local variables
+func _add_mod_data(mod_data, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
 	custom_items.append_array(mod_data.items)
 	custom_weapons.append_array(mod_data.weapons)
 	custom_characters.append_array(mod_data.characters)
@@ -86,9 +134,6 @@ func load_data(mod_data_path, mod_name:String = "UnspecifiedAuthor-UnspecifiedMo
 				# for weapon in character.starting_weapons:
 					# ModLoaderUtils.log_debug(str("weapon.my_id -> ", weapon.my_id), CLOADER_LOG)
 
-
-# Private
-# =============================================================================
 
 # Save data to the lookup dictionary
 func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-UnspecifiedModName"):
