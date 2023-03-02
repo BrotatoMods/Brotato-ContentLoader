@@ -1,7 +1,6 @@
 class_name ContentLoader
 extends Node
 
-var ContentData = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
 const CLOADER_LOG = "Darkly77-ContentLoader"
 
 # Content added via ContentLoader is added via `_install_data`, called in:
@@ -47,7 +46,7 @@ var lookup_data_bymod = {}
 # Main
 # =============================================================================
 
-# Helper method available to mods
+# Add content via a ContentData resource (.tres file)
 func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
 	var from_mod_text = ""
 	if mod_name != "":
@@ -64,28 +63,34 @@ func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-Unsp
 	_add_mod_data(mod_data, mod_name)
 
 
-# Adds missing keys with empty arrays to a provided mod_data dictionary. This
-# allows modders to pass a dictionary with just a single key, eg:
-# `var mod_data_dictionary = { "items": [] }`
+# Add content via a dictionary.
+# Note that you'll need to have created textures from any images on disk (you
+# can use Brotils for this, via `brotils_create_texture_from_image_path`)
+# Supports passing a dictionary with a single key, eg:
+#   var content_data_dictionary = { "items": [] }
 # @since 6.2.0
-func load_data_by_dictionary(mod_data_dict: Dictionary, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
-	var default_keys := [
-		"items",
-		"characters",
-		"weapons",
-		"sets",
-		"challenges",
-		"upgrades",
-		"consumables",
-		"elites",
-		"difficulties",
+func load_data_by_dictionary(content_data_dict: Dictionary, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
+	var valid_keys := [
+		"items",         # ItemData
+		"characters",    # CharacterData
+		"weapons",       # WeaponData
+		"sets",          # SetData
+		"challenges",    # ChallengeData / ExpandedChallengeData
+		"upgrades",      # UpgradeData
+		"consumables",   # ConsumableData
+		"elites",        # Enemydata
+		"difficulties",  # DifficultyData
+		"debug_items",   # ItemData
+		"debug_weapons", # WeaponData
 	]
 
-	for default_key in default_keys:
-		if not mod_data_dict.has(default_key):
-			mod_data_dict[default_key] = []
+	var mod_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
 
-	_add_mod_data(mod_data_dict, mod_name)
+	for key in valid_keys:
+		if content_data_dict.has(key):
+			mod_data[key] = content_data_dict[key]
+
+	_add_mod_data(mod_data, mod_name)
 
 
 # Private
