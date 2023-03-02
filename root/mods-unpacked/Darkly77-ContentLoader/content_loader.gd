@@ -93,6 +93,17 @@ func load_data_by_dictionary(content_data_dict: Dictionary, mod_name: String = "
 	_add_mod_data(mod_data, mod_name)
 
 
+# Load content from an instance of ContentData. Mods can't use global classes,
+# so you need to load the class before you create a new instance of it, eg:
+#   var content_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+# Note: There may be an issue with adding things to the empty arrays of a new
+# ContentData instance, and this can cause your content to be added to every
+# array. To fix this, duplicate your empty arrays before adding to them.
+# Search for `debug_items.duplicate` in the code below to see how this is done
+func load_data_by_content_data(content_data, mod_name: String = "UnspecifiedAuthor-UnspecifiedModName"):
+	_add_mod_data(content_data, mod_name)
+
+
 # Private
 # =============================================================================
 
