@@ -4,7 +4,7 @@
 
 ContentLoader makes it easy to add new content to Brotato.
 
-You can add: *Characters, Items, Weapons, Weapon Sets, Challenges (for all danger levels).*
+You can add: *Characters, Items, Weapons, Weapon Sets, Challenges.*
 
 For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.
 
