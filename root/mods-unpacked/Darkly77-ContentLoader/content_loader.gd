@@ -52,10 +52,10 @@ func load_data(mod_data_path: String, mod_name: String = "UnspecifiedAuthor-Unsp
 	if mod_name != "":
 		from_mod_text = " (via "+ mod_name +")"
 
-	ModLoaderUtils.log_info("Loading ContentData" + from_mod_text + " -> " + mod_data_path, CLOADER_LOG)
+	ModLoaderLog.info("Loading ContentData" + from_mod_text + " -> " + mod_data_path, CLOADER_LOG)
 
 	if not File.new().file_exists(mod_data_path):
-		ModLoaderUtils.log_fatal("Tried to load data from a file that doesn't exist, via the mod %s. The invalid path was: %s" % [mod_name, mod_data_path], CLOADER_LOG)
+		ModLoaderLog.fatal("Tried to load data from a file that doesn't exist, via the mod %s. The invalid path was: %s" % [mod_name, mod_data_path], CLOADER_LOG)
 		return
 
 	var mod_data = load(mod_data_path)
@@ -132,7 +132,7 @@ func _add_mod_data(mod_data, mod_name: String = "UnspecifiedAuthor-UnspecifiedMo
 			for character in wpn_characters:
 				character.starting_weapons.push_back(mod_data.weapons[i])
 				# for weapon in character.starting_weapons:
-					# ModLoaderUtils.log_debug(str("weapon.my_id -> ", weapon.my_id), CLOADER_LOG)
+					# ModLoaderLog.debug(str("weapon.my_id -> ", weapon.my_id), CLOADER_LOG)
 
 
 # Save data to the lookup dictionary
@@ -183,18 +183,18 @@ func _save_to_lookup(mod_data:Resource, mod_name:String = "UnspecifiedAuthor-Uns
 # Internal method that adds all custom content to the main game's pools
 # (via extensions/singletons/progress_data.gd)
 func _install_data():
-	ModLoaderUtils.log_info(str("Installing ContentData"), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("items -> ", custom_items), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("weapons -> ", custom_weapons), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("sets -> ", custom_sets), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("characters -> ", custom_characters), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("challenges -> ", custom_challenges), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("upgrades -> ", custom_upgrades), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("consumables -> ", custom_consumables), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("elites -> ", custom_elites), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("difficulties -> ", custom_difficulties), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("debug_items -> ", custom_debug_items), CLOADER_LOG)
-	ModLoaderUtils.log_debug(str("debug_weapons -> ", custom_debug_weapons), CLOADER_LOG)
+	ModLoaderLog.info(str("Installing ContentData"), CLOADER_LOG)
+	ModLoaderLog.debug(str("items -> ", custom_items), CLOADER_LOG)
+	ModLoaderLog.debug(str("weapons -> ", custom_weapons), CLOADER_LOG)
+	ModLoaderLog.debug(str("sets -> ", custom_sets), CLOADER_LOG)
+	ModLoaderLog.debug(str("characters -> ", custom_characters), CLOADER_LOG)
+	ModLoaderLog.debug(str("challenges -> ", custom_challenges), CLOADER_LOG)
+	ModLoaderLog.debug(str("upgrades -> ", custom_upgrades), CLOADER_LOG)
+	ModLoaderLog.debug(str("consumables -> ", custom_consumables), CLOADER_LOG)
+	ModLoaderLog.debug(str("elites -> ", custom_elites), CLOADER_LOG)
+	ModLoaderLog.debug(str("difficulties -> ", custom_difficulties), CLOADER_LOG)
+	ModLoaderLog.debug(str("debug_items -> ", custom_debug_items), CLOADER_LOG)
+	ModLoaderLog.debug(str("debug_weapons -> ", custom_debug_weapons), CLOADER_LOG)
 
 	# Add loaded content to the game
 	ItemService.items.append_array(custom_items)
@@ -215,27 +215,27 @@ func _install_data():
 
 	# Debug: Log all loaded content
 	for character in custom_characters:
-		ModLoaderUtils.log_debug("Added Character: " + tr(character.name) + " (" + character.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Character: " + tr(character.name) + " (" + character.my_id + ")", CLOADER_LOG)
 	for item in custom_items:
-		ModLoaderUtils.log_debug("Added Item: " + tr(item.name) + " (" + item.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Item: " + tr(item.name) + " (" + item.my_id + ")", CLOADER_LOG)
 	for weapon in custom_weapons:
-		ModLoaderUtils.log_debug("Added Weapon: " + tr(weapon.name) + " (" + weapon.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Weapon: " + tr(weapon.name) + " (" + weapon.my_id + ")", CLOADER_LOG)
 	for debug_item in custom_debug_items:
-		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_item.name), CLOADER_LOG)
+		ModLoaderLog.debug("Added Debug Item: " + tr(debug_item.name), CLOADER_LOG)
 	for debug_weapon in custom_debug_weapons:
-		ModLoaderUtils.log_debug("Added Debug Item: " + tr(debug_weapon.name), CLOADER_LOG)
+		ModLoaderLog.debug("Added Debug Item: " + tr(debug_weapon.name), CLOADER_LOG)
 	for set in custom_sets:
-		ModLoaderUtils.log_debug("Added Set: " + tr(set.name) + " (" + set.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Set: " + tr(set.name) + " (" + set.my_id + ")", CLOADER_LOG)
 	for challenge in custom_challenges:
-		ModLoaderUtils.log_debug("Added Challenge: " + tr(challenge.name) + " (" + challenge.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Challenge: " + tr(challenge.name) + " (" + challenge.my_id + ")", CLOADER_LOG)
 	for upgrade in custom_upgrades:
-		ModLoaderUtils.log_debug("Added Upgrade: " + tr(upgrade.name) + " (" + upgrade.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Upgrade: " + tr(upgrade.name) + " (" + upgrade.my_id + ")", CLOADER_LOG)
 	for consumable in custom_consumables:
-		ModLoaderUtils.log_debug("Added Consumable: " + tr(consumable.name) + " (" + consumable.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Consumable: " + tr(consumable.name) + " (" + consumable.my_id + ")", CLOADER_LOG)
 	for elite in custom_elites:
-		ModLoaderUtils.log_debug("Added Elite: " + elite.my_id, CLOADER_LOG)
+		ModLoaderLog.debug("Added Elite: " + elite.my_id, CLOADER_LOG)
 	for difficulty in custom_difficulties:
-		ModLoaderUtils.log_debug("Added Difficulty: " + tr(difficulty.name) + " (" + difficulty.my_id + ")", CLOADER_LOG)
+		ModLoaderLog.debug("Added Difficulty: " + tr(difficulty.name) + " (" + difficulty.my_id + ")", CLOADER_LOG)
 
 	# Debug: Test if your weapon was added to a specific character
 #	for character in ItemService.characters:
