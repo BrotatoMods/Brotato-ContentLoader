@@ -9,8 +9,8 @@ var ext_dir = ""
 # =============================================================================
 
 func _init(modLoader = ModLoader):
-	ModLoaderUtils.log_info("Init", CLOADER_LOG)
-	dir = modLoader.UNPACKED_DIR + "Darkly77-ContentLoader/"
+	ModLoaderLog.info("Init", CLOADER_LOG)
+	dir = ModLoaderMod.get_unpacked_dir() + "Darkly77-ContentLoader/"
 	ext_dir = dir + "extensions/"
 
 	_add_child_class()
@@ -18,7 +18,7 @@ func _init(modLoader = ModLoader):
 
 
 func _ready():
-	ModLoaderUtils.log_info("Done", CLOADER_LOG)
+	ModLoaderLog.info("Done", CLOADER_LOG)
 
 
 # Custom
@@ -31,7 +31,7 @@ func _install_extensions(modLoader):
 	# Note: Originally, this extended progress_data, but was changed to the
 	# last autoload (DebugService/debug_service) to allow other mods to also
 	# wait for ProgressData (or ItemService) to be ready first
-	modLoader.install_script_extension(ext_dir + "singletons/debug_service.gd")
+	ModLoaderMod.install_script_extension(ext_dir + "singletons/debug_service.gd")
 
 
 # Add ContentLoader as a child of this node (which itself is a child of ModLoader)
