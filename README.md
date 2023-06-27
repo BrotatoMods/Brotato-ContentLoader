@@ -4,7 +4,7 @@
 
 ContentLoader makes it easy to add new content to Brotato.
 
-You can add: *Characters, Items, Weapons, Weapon Sets, Challenges.*
+You can add: *Characters, Items, Weapons, Weapon Sets, Challenges, Elites, Difficulties, Consumables*.
 
 For references, see the mods that use ContentLoader in [Notable Mods](#notable-mods) below.
 
@@ -26,17 +26,15 @@ For references, see the mods that use ContentLoader in [Notable Mods](#notable-m
 
 ## Requirements
 
-- [ModLoader](https://github.com/GodotModding/godot-mod-loader) *(v4.1 or above)*
-* [Brotils](https://github.com/BrotatoMods/Brotato-Brotils/) - v1.0+
+- [ModLoader](https://github.com/GodotModding/godot-mod-loader)
+- [Brotils](https://github.com/BrotatoMods/Brotato-Brotils/)
 
 
 ## Structure
 
-Beyond ModLoader's [required structure](https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Structure), you are free to structure your ContentLoader mods however you want.
+You are free to structure your ContentLoader mods however you want, beyond ModLoader's [required structure](https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Structure).
 
-However, there is a recommended structure. Following this will make your mod easier to edit and maintain, and make it easier for other modders to provide support to you.
-
-You can refer to the examples of [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion) and [Assassin](https://github.com/BrotatoMods/Brotato-Assassin-Mod/tree/main/root/mods-unpacked/JuneFurrs-Assassin) to see how this looks for finished mods. Here's what their folders mean:
+However, I would recommend that you follow the standard set by [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion), which uses the following folders:
 
 - `content` - Stores all the custom content, with subfolders for each type (`items`, `weapons`, etc)
 - `content_data` - For your *ContentData* resource files
@@ -116,7 +114,7 @@ In the setup shown here, we've added a weapon called "Chainsaw". Note how each t
 
 ## Weapon's Characters
 
-This lists the characters who can start with a weapon. It requires weapons to be added via `weapons` in the same ContentData resource file.
+This lists the characters who can start with a weapon. It should be used in the same ContentData resource file that adds the weapon(s).
 
 It is an array of arrays:
 
@@ -156,7 +154,142 @@ Add Challenge items to the **Challenges** array:
 
 Adding items to the "Debug Items" array will add them to every character you play as, for every run. It has the same effect as using the `debug_items` array in DebugService.
 
-It is used by [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod) to add a [special item](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion/content/items/z_info) that shows the current version of the Invasion mod. This special item is not added to the normal Items array, and is not marked as "unlocked by default", which means it's not part of the shop pool. You may wish to do something similar in your own mod.
+You can use it force an item to always be added to the player's inventory, without adding it to the shop pool.
+
+- In an older version of [Invasion](https://github.com/BrotatoMods/Brotato-Invasion-Mod), this was used to add a [special item](https://github.com/BrotatoMods/Brotato-Invasion-Mod/tree/main/root/mods-unpacked/Darkly77-Invasion/content/items/z_info) that showed the current version of the Invasion mod. This special item was not added to the normal Items array, and was not marked as "unlocked by default", which meant it wasn't part of the shop pool.
+
+You can also use it to create a ContentData resource file that adds certain items for your own internal testing. This lets you keep your list of debug items in a single ContentData resource file, which can be selectively enabled/disabled. The advantage to doing this instead of using `DebugService.items` is that you won't need to clear the `items` array when you want to play without all the items.
+
+
+## Debug Weapons
+
+Same as Debug Items, but for weapons.
+
+
+## Elites
+
+Adds custom Elites to the pool. Custom Elites are spawned randomly during Elite waves, just like vanilla Elites.
+
+
+## Difficulties
+
+Adds custom difficulties. Accepts a difficulty resource, which follows the same format as vanilla's difficulties.
+
+For more details, view the README for my example mod: [Darkly77-CustomDifficultyModes](https://github.com/BrotatoMods/Darkly77-CustomDifficultyModes)
+
+
+## Consumables
+
+Adds custom consumables. Please note that this feature has not been tested.
+
+
+## API: Loading Content
+
+ContentLoader provides a few methods for loading data:
+
+### load_data
+
+```gdscript
+load_data(mod_data_path: String, mod_name: String = "Author-ModName"):
+```
+
+Add content from your ContentData resource. Specify the path to your ContentData resource file (*.tres*) with the 1st argument (`mod_data_path`), and specify your mod ID with the 2nd (`mod_name`).
+
+The majority of mods will only ever need to use this method.
+
+```gdscript
+# Example:
+var content_dir = "res://mods-unpacked/Author-ModName/content_data/"
+var mod_log     = "Author-ModName"
+ContentLoader.load_data(content_dir + "modname_characters.tres", mod_log)
+```
+
+### load_data_by_dictionary
+
+Add content via a dictionary, instead of a ContentData resource. This is an advanced feature that most mods will never use. But for those that want to, it allows you to programatically create mod content on the fly.
+
+```gdscript
+load_data_by_dictionary(content_data_dict: Dictionary, mod_name: String = "Author-ModName"):
+```
+
+Supports the following keys:
+
+```gdscript
+var content_data_dictionary = {
+	"items": [],         # ItemData
+	"characters": [],    # CharacterData
+	"weapons": [],       # WeaponData
+	"sets": [],          # SetData
+	"challenges": [],    # ChallengeData / ExpandedChallengeData
+	"upgrades": [],      # UpgradeData
+	"consumables": [],   # ConsumableData
+	"elites": [],        # Enemydata
+	"difficulties": [],  # DifficultyData
+	"debug_items": [],   # ItemData
+	"debug_weapons": [], # WeaponData
+}
+```
+
+Also supports passing a dictionary with a single key, eg:
+
+```gdscript
+var content_data_dictionary = { "items": [] }
+```
+
+Note that you'll need to create textures from any images on disk. You can use Brotils for this, via [`brotils_create_texture_from_image_path`](https://github.com/BrotatoMods/Brotato-Brotils/tree/main#brotils_create_texture_from_image_path). ContentLoader already depends on Brotils, so you are safe to use this method.
+
+### load_data_by_content_data
+
+```gdscript
+load_data_by_content_data(content_data, mod_name: String = "Author-ModName"):
+```
+
+Load content from an instance of [ContentData](https://github.com/BrotatoMods/Brotato-ContentLoader/blob/main/root/mods-unpacked/Darkly77-ContentLoader/content_data.gd). Similar to `load_data_by_dictionary`, but allows you to work with a ContentData object instead of JSON. Both have the same result, so which one you want to use depends on your personal preference.
+
+As above, this is also an advanced feature that mods mods will never use.
+
+Note 1: Mods can't use global classes, so you need to load the class before you create a new instance of it, eg:
+
+```gdscript
+var content_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+```
+
+Note 2: There may be an issue with adding things to the empty arrays of a new ContentData instance, and this can cause your content to be added to every array. To fix this, duplicate your empty arrays before adding to them. An example of how to do this is below. You can also search for `debug_items.duplicate` in the code for the file *content_loader.gd* to see a working example.
+
+```gdscript
+var content_data = load("res://mods-unpacked/Darkly77-ContentLoader/content_data.gd").new()
+var custom_items = [] # add item resources here
+
+content_data.items = content_data.items.duplicate() # This is needed in case the array is empty
+content_data.items.append_array(custom_items)
+
+load_data_by_content_data(content_data, "Author-ModName")
+```
+
+## API: Data Lookup
+
+ContentLoader stores all the content it adds, and provides 2 API methods to access the data. Note that while these methods use the string `by_item`, "item" in this case actually means any content added via ContentLoader.
+
+### lookup_modid_by_itemid
+
+```gdscript
+lookup_modid_by_itemid(item_id:String, type:String) -> String:
+```
+
+Gets the ID of a mod from an item ID.
+
+- `item_id` is always `my_id`.
+- `type` is either: `character` / `challenge` / `elite` / `item` / `set` / `upgrade` / `weapon`
+
+### lookup_modid_by_itemdata
+
+```gdscript
+lookup_modid_by_itemdata(item_data) -> String:
+```
+
+Gets the ID of a mod from a resource object.
+
+- `item_data` is one of these types of objects: (CharacterData / ChallengeData / ConsumableData / SetData / UpgradeData / WeaponData / EnemyData / DifficultyData / ItemData).
 
 
 ## Appendix
