@@ -1,7 +1,7 @@
 {
 	"name": "ContentLoader",
 	"namespace": "Darkly77",
-	"version_number": "6.2.1",
+	"version_number": "6.2.2",
 	"description": "Helper for mods to add new items, weapons, characters and challenges",
 	"website_url": "https://github.com/BrotatoMods/Brotato-ContentLoader",
 	"dependencies": [
@@ -9,15 +9,34 @@
 	],
 	"extra": {
 		"godot": {
-			"incompatibilities": [],
 			"authors": [
 				"Darkly77",
 				"dami",
 				"KANA"
 			],
-			"compatible_mod_loader_version": ["4.1.0"],
-			"compatible_game_version": ["0.8.0.3"],
-			"config_defaults": {}
+			"optional_dependencies": [
+
+			],
+			"compatible_game_version": [
+				"1.0.1.3"
+			],
+			"compatible_mod_loader_version": [
+				"6.2.0"
+			],
+			"incompatibilities": [
+
+			],
+			"load_before": [
+
+			],
+			"tags": [
+
+			],
+			"config_schema": {
+
+			},
+			"description_rich": "",
+			"image": null
 		}
 	}
 }
