@@ -18,7 +18,7 @@
 
 			],
 			"compatible_game_version": [
-				"1.0.1.3"
+				"1.1.4.0"
 			],
 			"compatible_mod_loader_version": [
 				"6.2.0"
@@ -30,7 +30,10 @@
 
 			],
 			"tags": [
-
+				"Loader",
+				"Util",
+				"Utils",
+				"Helper"
 			],
 			"config_schema": {
 
