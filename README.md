@@ -114,7 +114,17 @@ In the setup shown here, we've added a weapon called "Chainsaw". Note how each t
 
 ## Weapon's Characters
 
-This lists the characters who can start with a weapon. It should be used in the same ContentData resource file that adds the weapon(s).
+> [!IMPORTANT]
+> You can now use the `add_to_chars_as_starting` property in `WeaponData`. This also ensures that the weapon is correctly added to DLC characters.
+
+![screenshot of WeaponData](https://github.com/user-attachments/assets/fc0ce08a-3a09-4ca6-a27d-1a1c0482ea06)
+
+ 
+<details><summary>Legacy way of adding starting weapons</summary>
+
+<br/>
+	
+This lists the characters who can start with a weapon. It should be used in the same ContentData resource file that adds the weapon(s).   
 
 It is an array of arrays:
 
@@ -134,6 +144,8 @@ This setup adds the 4 tiers for "Chainsaw" (as shown above), and also adds two c
 This next setup does the same, but also adds Knight as a starting character for the Tier 2 version (ie. *chainsaw_2_data.tres*, which appears second in the `weapons` array, and so corresponds with the 2nd top-level array in **Weapons Characters**):
 
 ![screenshot](.docs/ContentData-weapons_characters-tier-2.png)
+
+</details>
 
 
 ## Weapon Sets (Classes)
