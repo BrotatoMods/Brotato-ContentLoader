@@ -36,7 +36,12 @@ func install_script_extensions():
 	# deserializes the save data. With Brotato Patch 1.0.1.3, the function
 	# cache_effect_hashes was introduced to ProgressData and causes an error if
 	# the modded data is not available in ItemService.
-	ModLoaderMod.install_script_extension("res://mods-unpacked/Darkly77-ContentLoader/extensions/singletons/utils.gd")
+	# UPDATE 6.2.3: Changed this again, Utils has been moved above ProgressData.
+	# This causes modded content progress data to not be loaded correctly.
+	# (max_difficulty_beaten gets deleted)
+	# Moved the ContentLoader._install_data() to ItemService._ready()
+
+	ModLoaderMod.install_script_extension("res://mods-unpacked/Darkly77-ContentLoader/extensions/singletons/item_service.gd")
 
 
 # Add ContentLoader as a child of this node (which itself is a child of ModLoader)
