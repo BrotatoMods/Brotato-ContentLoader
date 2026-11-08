@@ -13,7 +13,7 @@ var custom_sets = []          # Added to ItemService.sets
 var custom_challenges = []    # Added to ChallengeService.challenges
 var custom_upgrades = []      # Added to ItemService.upgrades
 var custom_consumables = []   # Added to ItemService.consumables
-var custom_elites = []        # Added to ItemService.elites
+var custom_elites = []        # Added to the crash zone's elites (ZoneService)
 var custom_difficulties = []  # Added to ItemService.difficulties
 var custom_debug_items = []   # Added to DebugService.items
 var custom_debug_weapons = [] # Added to DebugService.weapons
@@ -204,7 +204,8 @@ func _install_data():
 	ChallengeService.challenges.append_array(custom_challenges) # @since 2.1.0
 	ItemService.upgrades.append_array(custom_upgrades)          # @since 5.3.0
 	ItemService.consumables.append_array(custom_consumables)    # @since 5.3.0
-	ItemService.elites.append_array(custom_elites)              # @since 5.3.0
+	# Game 1.2.0.1: elites moved from ItemService to each zone's ZoneData
+	ZoneService.get_zone_data(0).elites.append_array(custom_elites) # @since 5.3.0
 	ItemService.difficulties.append_array(custom_difficulties)  # @since 6.1.0
 
 	# Add debug items (which makes you always start with them)
